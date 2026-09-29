@@ -32,3 +32,15 @@ uv run python manage.py makemigrations --check --dry-run
 - **Безпека:** секрети лише в `.env`; шляхи адмінок задаються змінними `WAGTAIL_ADMIN_PATH`, `DJANGO_ADMIN_PATH`; `manage.py check --deploy --settings=config.settings.prod` без попереджень.
 - Кожна зміна моделей — з міграцією; кожна нова сторінка чи фіча — з тестом у `tests/`.
 - Код: ruff (line-length 100), djlint для шаблонів; хук у `.claude/settings.json` форматує файли автоматично.
+
+## Субагенти (`.claude/agents/`)
+| Агент | Коли викликати |
+|---|---|
+| `wagtail-developer` | Моделі, блоки, міграції, views, тести |
+| `frontend-developer` | Шаблони, Tailwind, компоненти, Alpine.js |
+| `content-editor` | Тексти, help_text, переклад `.po`, CONTENT_GUIDE (без вигаданих фактів) |
+| `django-reviewer` | Рев'ю перед комітом: коректність, безпека, міграції, тести (лише звіт) |
+| `a11y-auditor` | Після змін у шаблонах і перед закриттям фази (лише звіт) |
+| `compliance-reviewer` | Перед закриттям фази / релізом: вимоги законодавства (лише звіт) |
+
+Типовий цикл: розробник (`wagtail-developer` / `frontend-developer`) → паралельно `django-reviewer` + `a11y-auditor` → виправлення → `compliance-reviewer` перед закриттям фази. Незалежні задачі бекенду й фронтенду можна давати агентам паралельно.

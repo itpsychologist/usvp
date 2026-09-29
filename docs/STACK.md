@@ -90,7 +90,12 @@ usvp/
 ### Локальні інструменти
 `uv` (пакети Python), Docker Desktop (PostgreSQL + прод-подібне середовище), `gh`, Node LTS (лише для Playwright/axe/Lighthouse; сам сайт Node не потребує), `pre-commit`.
 
-### Власні project-skills і хуки (створимо у Фазі 0)
+### Власні project-skills і хуки (створено у Фазі 0)
 - `.claude/skills/wagtail-page-type/SKILL.md`: чек-лист, як додати новий тип сторінки (модель, панелі, шаблон, переклад, тест, міграція).
 - `.claude/skills/a11y-check/SKILL.md`: прогін axe + Lighthouse і перевірка контрасту.
 - Хук `PostToolUse` для `*.py` запускає `ruff format`, для `*.html` запускає `djlint --reformat`.
+
+### Проєктні субагенти (`.claude/agents/`)
+- Реалізатори: `wagtail-developer` (бекенд), `frontend-developer` (шаблони, Tailwind, Alpine.js), `content-editor` (тексти й переклад інтерфейсу).
+- Рецензенти, лише читають і звітують: `django-reviewer` (коректність і безпека), `a11y-auditor` (WCAG 2.1 AA), `compliance-reviewer` (вимоги законодавства).
+- Порядок використання описано в `CLAUDE.md`. Плагіни `feature-dev` і `pr-review-toolkit` поки не встановлені; їх можна додати через `/plugin` як загальні доповнення.
