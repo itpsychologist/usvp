@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}
+  {% translate "Сторінку не знайдено" %}
+{% endblock title %}
+{% block content %}
+  <h1>{% translate "Сторінку не знайдено" %}</h1>
+  <p>{% translate "Можливо, сторінку було переміщено або видалено." %}</p>
+  <p><a href="/">{% translate "На головну" %}</a></p>
+{% endblock content %}

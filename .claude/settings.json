@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(uv run pytest:*)",
+      "Bash(uv run ruff:*)",
+      "Bash(uv run djlint:*)",
+      "Bash(uv run python manage.py check:*)",
+      "Bash(uv run python manage.py makemigrations:*)",
+      "Bash(uv run python manage.py showmigrations:*)",
+      "Bash(uv sync:*)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uv run --no-sync python \"$CLAUDE_PROJECT_DIR/.claude/hooks/format_file.py\"",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}

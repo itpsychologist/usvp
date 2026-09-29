@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Django / Wagtail
+.env
+db.sqlite3
+media/
+staticfiles/
+*.log
+
+# IDE / OS
+.idea/workspace.xml
+.idea/shelf/
+.idea/dataSources*
+.vscode/
+Thumbs.db
+.DS_Store
+
+# Claude Code (локальні налаштування)
+.claude/settings.local.json
+
+# Node (Playwright / Lighthouse)
+node_modules/

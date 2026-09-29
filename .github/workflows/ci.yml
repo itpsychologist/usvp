@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_DB: usvp
+          POSTGRES_USER: usvp
+          POSTGRES_PASSWORD: usvp
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U usvp"
+          --health-interval 5s --health-timeout 3s --health-retries 10
+    env:
+      DATABASE_URL: postgres://usvp:usvp@localhost:5432/usvp
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+      - run: uv sync --locked
+      - name: Lint
+        run: |
+          uv run ruff check .
+          uv run ruff format --check .
+          uv run djlint templates --check --lint
+      - name: Django checks
+        run: |
+          uv run python manage.py check
+          uv run python manage.py makemigrations --check --dry-run
+          DJANGO_SECRET_KEY=ci DJANGO_ALLOWED_HOSTS=example.gov.ua \
+            uv run python manage.py check --deploy --settings=config.settings.prod --fail-level WARNING
+      - name: Tests
+        run: uv run pytest
