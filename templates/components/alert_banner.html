@@ -10,7 +10,7 @@
     </p>
     {% if alert.url %}
       <a href="{{ alert.url }}"
-         class="font-medium text-ink hover:text-ink">{{ alert.link_text|default:_("Детальніше") }}</a>
+         class="font-medium text-ink hover:text-ink">{{ alert.link_text|default:_("Детальніше") }}<span class="sr-only">: {{ alert.text }}</span></a>
     {% endif %}
   </div>
 </div>

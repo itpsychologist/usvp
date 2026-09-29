@@ -1,0 +1,6 @@
+{% if value.href %}
+  <p>
+    <a href="{{ value.href }}"
+       class="{% if value.style == 'secondary' %}btn-secondary{% else %}btn-primary{% endif %}">{{ value.text }}</a>
+  </p>
+{% endif %}

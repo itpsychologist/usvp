@@ -1,6 +1,7 @@
 {% comment %}
   Картка дочірньої сторінки (лендинг розділу, пов'язані сторінки).
-  Параметри: card — {title, text, url}, heading_level — 2 або 3 (типово 3).
+  Параметри: card — {title, text, url} або сторінка Wagtail, card_text — текст замість card.text,
+  heading_level — 2 або 3 (типово 3).
 {% endcomment %}
 <article class="card relative flex h-full flex-col p-5 hover:border-primary-700">
   {% if heading_level == 2 %}
@@ -12,5 +13,7 @@
       <a href="{{ card.url }}" class="after:absolute after:inset-0">{{ card.title }}</a>
     </h3>
   {% endif %}
-  {% if card.text %}<p class="mt-2 text-gray-700">{{ card.text }}</p>{% endif %}
+  {% if card_text or card.text %}
+    <p class="mt-2 text-gray-700">{% firstof card_text card.text %}</p>
+  {% endif %}
 </article>

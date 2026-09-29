@@ -1,0 +1,10 @@
+<div>
+  {% if value.title %}
+    {% if heading_level == 2 %}
+      <h2 class="mb-3 text-xl md:text-2xl">{{ value.title }}</h2>
+    {% else %}
+      <h3 class="mb-3 text-xl">{{ value.title }}</h3>
+    {% endif %}
+  {% endif %}
+  {% include "components/document_list.html" with documents=value.documents %}
+</div>

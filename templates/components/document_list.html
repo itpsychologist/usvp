@@ -1,26 +1,30 @@
-{% load i18n %}
+{% load i18n site_tags %}
 {% comment %}
-  Список документів для завантаження. Параметри: documents — [{title, url, ext, size, date}].
-  Тип і розмір файлу — у тексті посилання, щоб людина знала, що завантажує (WCAG 2.4.4).
+  Список документів для завантаження. Параметри: documents — документи Wagtail або словники
+  {title, url, ext, size, date}. Тип і розмір файлу — у тексті посилання, щоб людина знала,
+  що завантажує (WCAG 2.4.4).
 {% endcomment %}
 <ul class="divide-y divide-gray-300 rounded-lg border border-gray-300">
   {% for doc in documents %}
-    <li class="flex items-start gap-4 p-4">
-      <span class="flex size-12 shrink-0 flex-col items-center justify-center rounded-md bg-primary-50 text-primary-700">
-        {% include "components/icon.html" with name="file-text" class="size-5" %}
-        <span class="text-xs font-medium uppercase" aria-hidden="true">{{ doc.ext }}</span>
-      </span>
-      <div class="min-w-0 flex-1">
-        <a href="{{ doc.url }}" class="font-medium" download>
-          {{ doc.title }}
-          <span class="sr-only">({{ doc.ext|upper }}, {{ doc.size }})</span>
-        </a>
-        <p class="mt-1 text-sm text-gray-600" aria-hidden="true">
-          {{ doc.ext|upper }} · {{ doc.size }}
-          {% if doc.date %}· {{ doc.date|date:"d.m.Y" }}{% endif %}
-        </p>
-      </div>
-      <span class="hidden text-primary-700 sm:block">{% include "components/icon.html" with name="download" %}</span>
-    </li>
+    {% with ext=doc|document_ext size=doc|document_size %}
+      <li class="flex items-start gap-4 p-4">
+        <span class="flex size-12 shrink-0 flex-col items-center justify-center rounded-md bg-primary-50 text-primary-700">
+          {% include "components/icon.html" with name="file-text" class="size-5" %}
+          <span class="text-xs font-medium uppercase" aria-hidden="true">{{ ext }}</span>
+        </span>
+        <div class="min-w-0 flex-1">
+          <a href="{{ doc.url }}" class="font-medium wrap-anywhere" download>
+            {{ doc.title }}
+            <span class="sr-only">({{ ext|upper }}{% if size %}, {{ size }}{% endif %})</span>
+          </a>
+          <p class="mt-1 text-sm text-gray-600" aria-hidden="true">
+            {{ ext|upper }}
+            {% if size %}· {{ size }}{% endif %}
+            {% if doc.date %}· {{ doc.date|date:"d.m.Y" }}{% endif %}
+          </p>
+        </div>
+        <span class="hidden text-primary-700 sm:block">{% include "components/icon.html" with name="download" %}</span>
+      </li>
+    {% endwith %}
   {% endfor %}
 </ul>

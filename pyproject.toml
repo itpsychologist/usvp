@@ -12,6 +12,8 @@ dependencies = [
     "whitenoise>=6.9",
     "gunicorn>=23",
     "django-tailwind-cli>=4",
+    "wagtail-2fa>=1.8",
+    "django-axes[ipware]>=8.3",
 ]
 
 [dependency-groups]

@@ -1,5 +1,5 @@
-{# Плитка «Що вам потрібно?»: уся плитка — посилання. Параметри: tile — {title, text, url, icon, veteran} #}
-<a href="{{ tile.url }}"
+{# Плитка «Що вам потрібно?»: уся плитка — посилання. Параметри: tile — {title, text, url, icon, veteran} або значення TaskTileBlock (посилання в href) #}
+<a href="{% firstof tile.href tile.url %}"
    class="card group flex h-full items-start gap-4 p-5 text-ink no-underline hover:border-primary-700 hover:text-ink">
   <span class="flex size-12 shrink-0 items-center justify-center rounded-md {% if tile.veteran %}bg-veteran-100 text-veteran-700{% else %}bg-primary-50 text-primary-700{% endif %}">
     {% include "components/icon.html" with name=tile.icon class="size-6" %}

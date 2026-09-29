@@ -11,6 +11,7 @@ uv sync                                   # залежності
 docker compose up -d db                   # PostgreSQL (без DATABASE_URL у .env буде SQLite)
 uv run python manage.py migrate
 uv run python manage.py createsuperuser
+uv run python manage.py setup_roles       # групи «Адміністратори» й «Контент-менеджери» (ідемпотентно)
 uv run python manage.py tailwind build     # зібрати CSS (tailwind watch — перезбирати під час розробки)
 uv run python manage.py runserver         # сайт: /  EN: /en/  адмінка: /cms-admin/  UI-кіт: /styleguide/
 uv run pytest                             # тести (settings: config.settings.test)

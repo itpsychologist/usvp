@@ -1,5 +1,21 @@
-{% load static wagtailcore_tags wagtailuserbar i18n %}
+{% load static wagtailcore_tags wagtailuserbar i18n site_tags %}
 {% get_current_language as LANGUAGE_CODE %}
+{% comment %}
+  Дані шапки й футера: з меню, SiteSettings і дерева сторінок (apps/core/templatetags/site_tags.py).
+  Сторінки /styleguide/ передають власні демо-дані, тому теги викликаються лише якщо змінної немає.
+{% endcomment %}
+{% if nav_items is None %}
+  {% main_menu as nav_items %}
+{% endif %}
+{% if footer_links is None %}
+  {% footer_menu as footer_links %}
+{% endif %}
+{% if site_info is None %}
+  {% site_info as site_info %}
+{% endif %}
+{% if last_updated is None %}
+  {% site_last_updated as last_updated %}
+{% endif %}
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}">
   <head>
@@ -31,6 +47,10 @@
     {% block top_bar %}
     {% endblock top_bar %}
     {% block alert_banner %}
+      {% site_alert as alert %}
+      {% if alert %}
+        {% include "components/alert_banner.html" %}
+      {% endif %}
     {% endblock alert_banner %}
     {% include "components/header.html" %}
     <main id="main" tabindex="-1" class="flex-1">

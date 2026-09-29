@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load i18n wagtailcore_tags site_tags %}
+{% block content %}
+  {% breadcrumbs page as breadcrumbs %}
+  {% section_nav page as section %}
+  {% with toc=page.toc %}
+    <div class="container-site">
+      {% include "components/breadcrumbs.html" %}
+      <div class="grid gap-10 pb-10 {% if section %}lg:grid-cols-[18rem_1fr]{% endif %}">
+        <article class="min-w-0">
+          <h1>{{ page.title }}</h1>
+          {% if page.intro %}<p class="mt-4 max-w-prose text-lg text-gray-700">{{ page.intro }}</p>{% endif %}
+          {% if toc %}
+            <div class="mt-8 max-w-prose">{% include "components/page_toc.html" %}</div>
+          {% endif %}
+          {# Цикл по body_items: без обгорток div.block-* (діють стилі .prose-site > …), з унікальними якорями й рівнями заголовків #}
+          <div class="prose-site mt-8">
+            {% for block, extra in page.body_items %}
+              {% include_block block with anchor=extra.anchor heading_level=extra.heading_level %}
+            {% endfor %}
+          </div>
+          {% if page.last_published_at %}
+            <p class="mt-10 text-sm text-gray-600">
+              {% translate "Сторінку оновлено:" %}
+              <time datetime="{{ page.last_published_at|date:'Y-m-d' }}">{{ page.last_published_at|date:"d.m.Y" }}</time>
+            </p>
+          {% endif %}
+        </article>
+        {% if section %}
+          <aside class="lg:order-first">
+            {% include "components/section_nav.html" %}
+          </aside>
+        {% endif %}
+      </div>
+    </div>
+  {% endwith %}
+{% endblock content %}

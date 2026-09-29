@@ -1,0 +1,22 @@
+{% load i18n %}
+{# Сторінка блокування django-axes. Без base.html: показується і на сторінці входу в адмінку #}
+<!DOCTYPE html>
+<html lang="uk">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <title>{% translate "Вхід тимчасово заблоковано" %}</title>
+  </head>
+  <body>
+    <main>
+      <h1>{% translate "Вхід тимчасово заблоковано" %}</h1>
+      <p>{% translate "Забагато невдалих спроб входу. Вхід заблоковано на певний час, спробуйте пізніше." %}</p>
+      <p>{% translate "Зазвичай блокування знімається через годину." %}</p>
+      <p>{% translate "Якщо ви забули пароль, зверніться до адміністратора сайту." %}</p>
+      <p>
+        <a href="/">{% translate "Перейти на головну сторінку сайту" %}</a>
+      </p>
+    </main>
+  </body>
+</html>

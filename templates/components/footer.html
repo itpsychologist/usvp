@@ -1,7 +1,8 @@
 {% load i18n %}
 {% comment %}
   Футер. Контекст (у фазі 2 — з SiteSettings і меню футера):
-  site_info — {address, phones: [{label, number, href}], email, schedule: [{days, hours}], map_url, facebook_url, council_url}
+  site_info — {address, phones: [{label, number, href}], email, schedule: [{days, hours}], map_url, facebook_url,
+  council_url, content_license}
   footer_links — [{title, url}] службові сторінки
   last_updated — дата останнього оновлення сайту
 {% endcomment %}
@@ -87,7 +88,10 @@
   {% endif %}
   <div class="border-t border-white/20">
     <div class="container-site flex flex-col gap-2 py-6 text-sm text-primary-100 md:flex-row md:justify-between">
-      <p>© {{ current_year }} {% translate "Управління соціальної та ветеранської політики Лубенської міської ради" %}</p>
+      <div>
+        <p>© {{ current_year }} {% translate "Управління соціальної та ветеранської політики Лубенської міської ради" %}</p>
+        {% if site_info.content_license %}<p class="mt-1">{{ site_info.content_license }}</p>{% endif %}
+      </div>
       {% if last_updated %}
         <p>
           {% translate "Останнє оновлення:" %} <time datetime="{{ last_updated|date:'Y-m-d' }}">{{ last_updated|date:"d.m.Y" }}</time>

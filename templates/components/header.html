@@ -1,4 +1,4 @@
-{% load i18n %}
+{% load i18n wagtailimages_tags %}
 {% comment %}
   Шапка сайту. Контекст (усе необов'язкове, у фазі 2 надходитиме з меню й SiteSettings):
   nav_items — [{title, url, active, current, description, children: [{title, url, current}]}]
@@ -30,7 +30,12 @@
   <div class="container-site flex flex-wrap items-center justify-between gap-4 py-4">
     <a href="{% if LANGUAGE_CODE == 'en' %}/en/{% else %}/{% endif %}"
        class="flex min-w-0 items-center gap-3 text-primary-900 no-underline hover:text-primary-800">
-      {% include "components/emblem.html" %}
+      {% if site_info.emblem %}
+        {# Герб декоративний: поруч текстова назва установи #}
+        {% image site_info.emblem height-96 class="h-12 w-auto shrink-0" alt="" %}
+      {% else %}
+        {% include "components/emblem.html" %}
+      {% endif %}
       <span class="font-head text-base leading-tight font-medium sm:text-lg">
         {% translate "Управління соціальної та ветеранської політики" %}
         <span class="block font-sans text-sm font-normal text-gray-700 sm:text-base">{% translate "Лубенської міської ради" %}</span>

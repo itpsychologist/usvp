@@ -17,11 +17,13 @@ INSTALLED_APPS = [
     # Проєктні застосунки
     "apps.core",
     "apps.home",
+    "apps.pages",
     # Wagtail
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",
     "wagtail.contrib.settings",
     "wagtail.contrib.sitemaps",
+    "wagtail.contrib.typed_table_block",
     "wagtail.embeds",
     "wagtail.sites",
     "wagtail.users",
@@ -34,6 +36,11 @@ INSTALLED_APPS = [
     "modelcluster",
     "taggit",
     "django_tailwind_cli",
+    # Безпека входу в адмінку: 2FA (TOTP) і захист від перебору паролів
+    "wagtail_2fa",
+    "django_otp",
+    "django_otp.plugins.otp_totp",
+    "axes",
     # Django
     "django.contrib.admin",
     "django.contrib.auth",
@@ -52,9 +59,17 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "apps.core.middleware.VerifyUserMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
+    # Має бути останнім: блокує вхід після серії невдалих спроб
+    "axes.middleware.AxesMiddleware",
+]
+
+AUTHENTICATION_BACKENDS = [
+    "axes.backends.AxesStandaloneBackend",
+    "django.contrib.auth.backends.ModelBackend",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -132,6 +147,10 @@ STORAGES = {
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 10_000
 
+# Кеш (меню, дата оновлення). Типово — у пам'яті процесу; у prod з кількома процесами Gunicorn
+# краще спільний кеш, напр. CACHE_URL=filecache:///var/tmp/usvp-cache або redis://…
+CACHES = {"default": env.cache("CACHE_URL", default="locmemcache://")}
+
 # Wagtail
 WAGTAIL_SITE_NAME = "Управління соціальної та ветеранської політики Лубенської міської ради"
 WAGTAILADMIN_BASE_URL = env("WAGTAILADMIN_BASE_URL", default="http://localhost:8000")
@@ -139,12 +158,35 @@ WAGTAIL_ADMIN_PATH = env("WAGTAIL_ADMIN_PATH", default="cms-admin/")
 DJANGO_ADMIN_PATH = env("DJANGO_ADMIN_PATH", default="django-admin/")
 WAGTAILADMIN_PERMITTED_LANGUAGES = [("uk", "Українська"), ("en", "English")]
 WAGTAILDOCS_EXTENSIONS = ["pdf", "doc", "docx", "xls", "xlsx", "odt", "ods", "csv", "zip"]
-WAGTAILIMAGES_EXTENSIONS = ["jpg", "jpeg", "png", "webp", "avif", "gif", "svg"]
+# Без SVG: файл SVG може містити скрипт, що виконається при відкритті з /media/ на домені сайту
+WAGTAILIMAGES_EXTENSIONS = ["jpg", "jpeg", "png", "webp", "avif", "gif"]
 WAGTAILIMAGES_MAX_UPLOAD_SIZE = 10 * 1024 * 1024
 WAGTAILSEARCH_BACKENDS = {
     "default": {"BACKEND": "wagtail.search.backends.database"},
 }
 WAGTAILEMBEDS_RESPONSIVE_HTML = True
+WAGTAILADMIN_RICH_TEXT_EDITORS = {
+    "default": {
+        "WIDGET": "wagtail.admin.rich_text.DraftailRichTextArea",
+        "OPTIONS": {
+            "features": ["h3", "bold", "italic", "ol", "ul", "link", "document-link", "hr"]
+        },
+    }
+}
+
+# 2FA (TOTP) для всіх, хто має доступ до адмінки. У dev можна вимкнути через .env.
+WAGTAIL_2FA_REQUIRED = env.bool("WAGTAIL_2FA_REQUIRED", default=True)
+WAGTAIL_2FA_OTP_TOTP_NAME = "УСВП Лубни"
+
+# django-axes: блокування за парою «логін + IP» після 5 невдалих спроб на 1 годину
+AXES_FAILURE_LIMIT = env.int("AXES_FAILURE_LIMIT", default=5)
+AXES_COOLOFF_TIME = env.int("AXES_COOLOFF_HOURS", default=1)
+AXES_LOCKOUT_PARAMETERS = [["username", "ip_address"]]
+AXES_RESET_ON_SUCCESS = True
+AXES_VERBOSE = False
+AXES_LOCKOUT_TEMPLATE = "core/lockout.html"
+# Без проксі довіряємо лише REMOTE_ADDR: X-Forwarded-For клієнт може підробити (див. prod.py)
+AXES_IPWARE_META_PRECEDENCE_ORDER = ["REMOTE_ADDR"]
 
 LOGGING = {
     "version": 1,

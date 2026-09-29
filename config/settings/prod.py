@@ -21,6 +21,11 @@ SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
 SESSION_COOKIE_HTTPONLY = True
 X_FRAME_OPTIONS = "DENY"
 
+# 2FA для адмінки в продакшні обов'язкова незалежно від .env; за Nginx — один проксі
+WAGTAIL_2FA_REQUIRED = True
+AXES_IPWARE_PROXY_COUNT = env.int("AXES_PROXY_COUNT", default=1)
+AXES_IPWARE_META_PRECEDENCE_ORDER = ["HTTP_X_FORWARDED_FOR", "REMOTE_ADDR"]
+
 # Макети з текстами-заглушками не повинні потрапити на публічний сайт, незалежно від .env
 STYLEGUIDE_ENABLED = False
 

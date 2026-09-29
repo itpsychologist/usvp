@@ -26,7 +26,7 @@ WIREFRAMES = {
 }
 
 PHONE = {"number": "(0XXXX) X-XX-XX", "href": "+380000000000"}
-CARD_PHONE = {"phone": PHONE["number"], "phone_href": PHONE["href"]}
+CARD_PHONE = {"phone": PHONE["number"]}
 
 SITE_INFO = {
     "address": "вул. [Назва], [№], м. Лубни, Полтавська обл., [індекс]",
@@ -459,7 +459,6 @@ def _page_context(name):
                     "name": "Прізвище Ім'я По батькові",
                     "position": "Начальник управління",
                     "reception": "Особистий прийом: [день], [години]",
-                    "phone_href": PHONE["href"],
                     "phone": PHONE["number"],
                 },
                 {

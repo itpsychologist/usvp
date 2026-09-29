@@ -1,0 +1,6 @@
+{# Заголовок з якорем для «На цій сторінці» #}
+{% if value.level == "h3" %}
+  <h3 id="{{ anchor }}">{{ value.text }}</h3>
+{% else %}
+  <h2 id="{{ anchor }}">{{ value.text }}</h2>
+{% endif %}

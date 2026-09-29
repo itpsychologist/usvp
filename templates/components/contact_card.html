@@ -1,6 +1,6 @@
-{% load i18n %}
+{% load i18n site_tags %}
 {% comment %}
-  Контактна картка відділу. Параметри: contact — {title, address, phone, phone_href, email, hours, room};
+  Контактна картка відділу. Параметри: contact — {title, address, phone, email, hours, room};
   heading_level (типово 3).
 {% endcomment %}
 <section class="card p-5">
@@ -28,7 +28,7 @@
           <span class="sr-only">{% translate "Телефон" %}</span>
         </dt>
         <dd>
-          <a href="tel:{{ contact.phone_href }}">{{ contact.phone }}</a>
+          <a href="tel:{{ contact.phone|tel_href }}">{{ contact.phone }}</a>
         </dd>
       </div>
     {% endif %}

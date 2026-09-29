@@ -156,6 +156,24 @@ wheels = [
 ]
 
 [[package]]
+name = "django-axes"
+version = "8.3.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "asgiref" },
+    { name = "django" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/f0/b4/00c701a22d46288e3eb1340a1c141f5b4002572ce836a3e8d069f1e1de8a/django_axes-8.3.1.tar.gz", hash = "sha256:d57e923c0ba33cf45275253dd1313c3a3ff04bec686b38d677beb2b3d43c7bcd", size = 254715, upload-time = "2026-02-11T20:19:52.172Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/46/f6/777a5df7d5698eeb23c7c496cc268c0181f0489dbc5b5f2b235b30e5d8dd/django_axes-8.3.1-py3-none-any.whl", hash = "sha256:f7887582fd12713064f1602091ff6152752becae5e891a15bf802746cab0f51a", size = 74213, upload-time = "2026-02-11T20:19:48.646Z" },
+]
+
+[package.optional-dependencies]
+ipware = [
+    { name = "django-ipware" },
+]
+
+[[package]]
 name = "django-click"
 version = "2.5.0"
 source = { registry = "https://pypi.org/simple" }
@@ -189,6 +207,19 @@ wheels = [
 ]
 
 [[package]]
+name = "django-ipware"
+version = "8.0.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "django" },
+    { name = "python-ipware" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/41/3a/e90c321c10cdf4c53dbad3cfd28efceb6fc164c3ec2d98cf71f4ae060c04/django_ipware-8.0.0.tar.gz", hash = "sha256:377cc7926ea377d8f544511b019cd32b28060e1c9caa3d0c43c3e5e923560f33", size = 17747, upload-time = "2026-09-22T21:30:47.55Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ea/58/29dd16630be7516b079d66537ac7725e92720807347558478a1f2a738fb6/django_ipware-8.0.0-py3-none-any.whl", hash = "sha256:63e9e589aa58c37fbcd3f7624d18a08e69d95b03c84bab7e5ad2a12b03f8c4ec", size = 12626, upload-time = "2026-09-22T21:30:46.565Z" },
+]
+
+[[package]]
 name = "django-modelcluster"
 version = "6.5"
 source = { registry = "https://pypi.org/simple" }
@@ -198,6 +229,18 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/34/0f/c5fd0c280a10224d619325783bfaab5a54903f82340e41ae21ab3127ebc9/django_modelcluster-6.5.tar.gz", hash = "sha256:459cbf0fb3bbc8c15ea9a2a062abc0d1ef935a38e04aa8ac3cb241c826bbc6dd", size = 29707, upload-time = "2026-05-01T12:25:33.524Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/cd/57/cdcdea9a56d114e9217d52ce9a8af19ad7fe8a0996faf8480d3f286c02e0/django_modelcluster-6.5-py3-none-any.whl", hash = "sha256:469b380a294027d5211d0e5d5746e0381f445b058d2229977a58fe0f1c58a596", size = 29865, upload-time = "2026-05-01T12:25:31.886Z" },
+]
+
+[[package]]
+name = "django-otp"
+version = "1.7.3"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "django" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/08/88/f98f860f5c209bfa1980c63ff38128b50166bf396d28c60d93c42bdb08de/django_otp-1.7.3.tar.gz", hash = "sha256:3ce501173bf1b936146ffe5ff0cfdae1a0c7eb46cce1e9e3fdddd984d993c74f", size = 78996, upload-time = "2026-09-06T16:44:21.098Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/e1/a5/bb9d7b83b0ebf62603d3ff707cf492f75ec60077495b885ecbdf09774f67/django_otp-1.7.3-py3-none-any.whl", hash = "sha256:7d52fb0f76c4c1c86cbc71c196d3f79941b0b84aff980e45193bef89a70a7a12", size = 73702, upload-time = "2026-09-06T16:44:19.807Z" },
 ]
 
 [[package]]
@@ -664,6 +707,15 @@ wheels = [
 ]
 
 [[package]]
+name = "python-ipware"
+version = "4.1.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/ed/fe/915bb21fdbbe623abc3a943d7e3581307fd21846e93f40b4d19c351953da/python_ipware-4.1.0.tar.gz", hash = "sha256:a2cb7dc0869713256b8c3edda7923490ecc8fc160cb911563c16ec7631dd572b", size = 39369, upload-time = "2026-09-22T20:50:00.989Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/69/01/668588e169bef89959ecb53142f84cdad5e8fde0ba931f28a7c39d02a909/python_ipware-4.1.0-py3-none-any.whl", hash = "sha256:fb5b3ad4b4c7d9f3b5b60adebd9585ac6a4a8abffa4fd91453b78d42ac1235f7", size = 27222, upload-time = "2026-09-22T20:49:59.744Z" },
+]
+
+[[package]]
 name = "pyyaml"
 version = "6.0.3"
 source = { registry = "https://pypi.org/simple" }
@@ -679,6 +731,18 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/74/93/7baea19427dcfbe1e5a372d81473250b379f04b1bd3c4c5ff825e2327202/pyyaml-6.0.3-cp312-cp312-win32.whl", hash = "sha256:96b533f0e99f6579b3d4d4995707cf36df9100d67e0c8303a0c55b27b5f99bc5", size = 137658, upload-time = "2025-09-25T21:32:20.209Z" },
     { url = "https://files.pythonhosted.org/packages/86/bf/899e81e4cce32febab4fb42bb97dcdf66bc135272882d1987881a4b519e9/pyyaml-6.0.3-cp312-cp312-win_amd64.whl", hash = "sha256:5fcd34e47f6e0b794d17de1b4ff496c00986e1c83f7ab2fb8fcfe9616ff7477b", size = 154003, upload-time = "2025-09-25T21:32:21.167Z" },
     { url = "https://files.pythonhosted.org/packages/1a/08/67bd04656199bbb51dbed1439b7f27601dfb576fb864099c7ef0c3e55531/pyyaml-6.0.3-cp312-cp312-win_arm64.whl", hash = "sha256:64386e5e707d03a7e172c0701abfb7e10f0fb753ee1d773128192742712a98fd", size = 140344, upload-time = "2025-09-25T21:32:22.617Z" },
+]
+
+[[package]]
+name = "qrcode"
+version = "8.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "colorama", marker = "sys_platform == 'win32'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/8f/b2/7fc2931bfae0af02d5f53b174e9cf701adbb35f39d69c2af63d4a39f81a9/qrcode-8.2.tar.gz", hash = "sha256:35c3f2a4172b33136ab9f6b3ef1c00260dd2f66f858f24d88418a015f446506c", size = 43317, upload-time = "2025-05-01T15:44:24.726Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/dd/b8/d2d6d731733f51684bbf76bf34dab3b70a9148e8f2cef2bb544fccec681a/qrcode-8.2-py3-none-any.whl", hash = "sha256:16e64e0716c14960108e85d853062c9e8bba5ca8252c0b4d0231b9df4060ff4f", size = 45986, upload-time = "2025-05-01T15:44:22.781Z" },
 ]
 
 [[package]]
@@ -755,6 +819,15 @@ wheels = [
 ]
 
 [[package]]
+name = "six"
+version = "1.17.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/94/e7/b2c673351809dca68a0e064b6af791aa332cf192da575fd474ed7d6f16a2/six-1.17.0.tar.gz", hash = "sha256:ff70335d468e7eb6ec65b95b99d3a2836546063f63acc5171de367e834932a81", size = 34031, upload-time = "2024-12-04T17:35:28.174Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b7/ce/149a00dd41f10bc29e5921b496af8b574d8413afcd5e30dfa0ed46c2cc5e/six-1.17.0-py2.py3-none-any.whl", hash = "sha256:4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274", size = 11050, upload-time = "2024-12-04T17:35:26.475Z" },
+]
+
+[[package]]
 name = "soupsieve"
 version = "2.10"
 source = { registry = "https://pypi.org/simple" }
@@ -814,11 +887,13 @@ version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "django" },
+    { name = "django-axes", extra = ["ipware"] },
     { name = "django-environ" },
     { name = "django-tailwind-cli" },
     { name = "gunicorn" },
     { name = "psycopg", extra = ["binary"] },
     { name = "wagtail" },
+    { name = "wagtail-2fa" },
     { name = "whitenoise" },
 ]
 
@@ -836,11 +911,13 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "django", specifier = ">=5.2,<5.3" },
+    { name = "django-axes", extras = ["ipware"], specifier = ">=8.3" },
     { name = "django-environ", specifier = ">=0.12" },
     { name = "django-tailwind-cli", specifier = ">=4" },
     { name = "gunicorn", specifier = ">=23" },
     { name = "psycopg", extras = ["binary"], specifier = ">=3.2" },
     { name = "wagtail", specifier = ">=7.4,<7.5" },
+    { name = "wagtail-2fa", specifier = ">=1.8" },
     { name = "whitenoise", specifier = ">=6.9" },
 ]
 
@@ -897,6 +974,22 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/ec/de/cd7673469477c875ffa9135816c35e8346a41ce5253ccf4d6a4bece6c2b8/wagtail-7.4.3.tar.gz", hash = "sha256:e359e457ba7838b1c398f7169e34e203cefd75df9062eb8ecadb4be8f1c52912", size = 6834767, upload-time = "2026-08-20T15:28:47.912Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/13/7a/419900fddc7cdd6b614ac53d3cef877d68ae39751a771b49c62bd27fee89/wagtail-7.4.3-py3-none-any.whl", hash = "sha256:dafa7d25459724822362db816c37261cc37441dd1ff0e08f47386615d2644171", size = 9465320, upload-time = "2026-08-20T15:28:42.674Z" },
+]
+
+[[package]]
+name = "wagtail-2fa"
+version = "1.8.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "django" },
+    { name = "django-otp" },
+    { name = "qrcode" },
+    { name = "six" },
+    { name = "wagtail" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/12/9a/b7166a0f7cee7121f61d5c002203bc46a7e2a472bf563adf9a60ee32614c/wagtail_2fa-1.8.0.tar.gz", hash = "sha256:cd38f66a4d0ea6d63f3fa3d963ab24095f12f55c12340eab92df06a2339ce3a6", size = 25272, upload-time = "2026-03-02T15:38:11.114Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/c1/bb/6f14801cacee011c696b4f12de5ff28e11556ae996ab46d06dbc3f72d915/wagtail_2fa-1.8.0-py3-none-any.whl", hash = "sha256:cfd3d2678c53f16f3af4b0f7587c1fd0508488cbf70bc0176151bcf2369a093f", size = 41064, upload-time = "2026-03-02T15:38:10.039Z" },
 ]
 
 [[package]]

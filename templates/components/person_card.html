@@ -1,6 +1,6 @@
-{% load i18n %}
+{% load i18n site_tags %}
 {% comment %}
-  Картка людини (керівництво, фахівці із супроводу). Параметри: person — {name, position, phone, phone_href,
+  Картка людини (керівництво, фахівці із супроводу). Параметри: person — {name, position, phone,
   email, reception, photo_alt}; heading_level (типово 3). Фото — лише за письмовою згодою працівника.
 {% endcomment %}
 <article class="card flex flex-col gap-4 p-5 sm:flex-row">
@@ -22,7 +22,7 @@
             <span class="sr-only">{% translate "Телефон" %}</span>
           </dt>
           <dd>
-            <a href="tel:{{ person.phone_href }}">{{ person.phone }}</a>
+            <a href="tel:{{ person.phone|tel_href }}">{{ person.phone }}</a>
           </dd>
         </div>
       {% endif %}

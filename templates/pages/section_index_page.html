@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags site_tags %}
+{% block content %}
+  {% breadcrumbs page as breadcrumbs %}
+  <div class="border-b-4 {% if page.accent == 'veteran' %}border-veteran-600 bg-veteran-100{% else %}border-primary-500 bg-primary-50{% endif %}">
+    <div class="container-site pb-10">
+      {% include "components/breadcrumbs.html" %}
+      <h1 class="mt-2">{{ page.title }}</h1>
+      {% if page.intro %}<p class="mt-4 max-w-prose text-lg text-gray-700">{{ page.intro }}</p>{% endif %}
+    </div>
+  </div>
+  <div class="container-site py-10">
+    {% if children %}
+      <ul class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {% for child in children %}
+          <li>{% include "components/card_link.html" with card=child card_text=child.summary heading_level=2 %}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    {% if page.body %}
+      <div class="prose-site mt-12">
+        {% for block, extra in page.body_items %}
+          {% include_block block with anchor=extra.anchor heading_level=extra.heading_level %}
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+{% endblock content %}

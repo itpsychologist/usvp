@@ -4,6 +4,7 @@ DEBUG = False
 SECRET_KEY = "test-secret-key"  # noqa: S105
 ALLOWED_HOSTS = ["*"]
 
+WAGTAIL_2FA_REQUIRED = False
 PASSWORD_HASHERS = ["django.contrib.auth.hashers.MD5PasswordHasher"]
 EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
 

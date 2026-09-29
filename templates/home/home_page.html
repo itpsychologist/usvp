@@ -1,5 +1,73 @@
 {% extends "base.html" %}
+{% load i18n %}
 {% block body_class %}page-home{% endblock body_class %}
 {% block content %}
-  <h1>{{ page.title }}</h1>
+  <section class="bg-primary-50">
+    <div class="container-site py-10 md:py-16">
+      <h1 class="max-w-3xl text-3xl md:text-display">{{ page.hero_heading }}</h1>
+      {% if page.hero_text %}<p class="mt-4 max-w-prose text-lg text-gray-700">{{ page.hero_text }}</p>{% endif %}
+      {% if search_url %}
+        <div class="mt-8 max-w-2xl">{% include "components/search_form.html" with form_id="hero-search" %}</div>
+      {% endif %}
+    </div>
+  </section>
+  {% if page.tiles %}
+    <section class="container-site py-12" aria-labelledby="tasks-title">
+      <h2 id="tasks-title">{% translate "Що вам потрібно?" %}</h2>
+      <ul class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {% for block in page.tiles %}
+          <li>{% include "components/task_tile.html" with tile=block.value %}</li>
+        {% endfor %}
+      </ul>
+    </section>
+  {% endif %}
+  {% if featured %}
+    <section class="container-site py-12" aria-labelledby="services-title">
+      <h2 id="services-title">{% translate "Ключові послуги та програми" %}</h2>
+      <ul class="mt-6 grid gap-4 md:grid-cols-3">
+        {% for item in featured %}
+          <li>{% include "components/card_link.html" with card=item card_text=item.summary %}</li>
+        {% endfor %}
+      </ul>
+    </section>
+  {% endif %}
+  {% if site_info.address or site_info.schedule %}
+    <section class="container-site py-12" aria-labelledby="visit-title">
+      <div class="grid gap-8 rounded-lg bg-primary-50 p-6 md:grid-cols-2 md:p-10">
+        <div class="min-w-0">
+          <h2 id="visit-title">{% translate "Як нас знайти" %}</h2>
+          {% if site_info.address %}
+            <p class="mt-4 flex gap-3">
+              {% include "components/icon.html" with name="map-pin" class="mt-1 size-5 text-primary-700" %}
+              {{ site_info.address }}
+            </p>
+          {% endif %}
+          {% for phone in site_info.phones|slice:":1" %}
+            <p class="mt-3 flex gap-3">
+              {% include "components/icon.html" with name="phone" class="mt-1 size-5 text-primary-700" %}
+              <a href="tel:{{ phone.href }}">{{ phone.number }}</a>
+            </p>
+          {% endfor %}
+          {% if site_info.map_url %}
+            <div class="mt-6">
+              <a href="{{ site_info.map_url }}"
+                 class="btn-primary"
+                 rel="noopener noreferrer"
+                 target="_blank">
+                {% include "components/icon.html" with name="map-pin" %}
+                {% translate "Відкрити на Google Maps" %}
+                <span class="sr-only">({% translate "відкривається в новій вкладці" %})</span>
+              </a>
+            </div>
+          {% endif %}
+        </div>
+        {% if site_info.schedule %}
+          <div class="min-w-0">
+            <h3>{% translate "Графік роботи" %}</h3>
+            <div class="mt-4">{% include "components/schedule.html" with schedule=site_info.schedule %}</div>
+          </div>
+        {% endif %}
+      </div>
+    </section>
+  {% endif %}
 {% endblock content %}

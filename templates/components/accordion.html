@@ -1,6 +1,6 @@
 {% comment %}
   Акордеон / FAQ на нативних <details>: працює без JS, доступний із клавіатури й скрінрідерів.
-  Параметри: items — [{title, text}]. Заголовки всередині summary не ставимо: summary має роль кнопки.
+  Параметри: items — [{title, text}] або [{title, body}], де body — готовий HTML (RichText). Заголовки всередині summary не ставимо: summary має роль кнопки.
 {% endcomment %}
 <div class="divide-y divide-gray-300 rounded-lg border border-gray-300">
   {% for item in items %}
@@ -12,7 +12,11 @@
         </span>
       </summary>
       <div class="prose-site px-4 pt-1 pb-4">
-        <p>{{ item.text }}</p>
+        {% if item.body %}
+          {{ item.body }}
+        {% else %}
+          <p>{{ item.text }}</p>
+        {% endif %}
       </div>
     </details>
   {% endfor %}

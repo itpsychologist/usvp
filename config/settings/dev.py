@@ -5,6 +5,7 @@ DEBUG = env.bool("DJANGO_DEBUG", default=True)
 ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["*"])
 
 STYLEGUIDE_ENABLED = env.bool("STYLEGUIDE_ENABLED", default=True)
+WAGTAIL_2FA_REQUIRED = env.bool("WAGTAIL_2FA_REQUIRED", default=False)
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 

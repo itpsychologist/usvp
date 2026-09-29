@@ -1,0 +1,6 @@
+{% load wagtailimages_tags %}
+{# alt береться з ImageBlock: обов'язковий, або порожній для декоративних зображень #}
+<figure>
+  {% picture value.image format-{avif,webp,jpeg} width-{480,800,1200} sizes="(min-width: 1024px) 800px, 100vw" class="h-auto w-full rounded-lg" %}
+  {% if value.caption %}<figcaption class="mt-2 text-sm text-gray-600">{{ value.caption }}</figcaption>{% endif %}
+</figure>
