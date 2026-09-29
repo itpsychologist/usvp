@@ -1,12 +1,15 @@
-{% load i18n site_tags %}
+{% load i18n site_tags wagtailimages_tags %}
 {% comment %}
   Картка людини (керівництво, фахівці із супроводу). Параметри: person — {name, position, phone,
-  email, reception, photo_alt}; heading_level (типово 3). Фото — лише за письмовою згодою працівника.
+  email, reception, photo | placeholder_photo}; heading_level (типово 3). Фото — лише за письмовою згодою працівника.
 {% endcomment %}
 <article class="card flex flex-col gap-4 p-5 sm:flex-row">
-  <div class="aspect-[3/4] w-28 shrink-0 rounded-md bg-gray-200"
-       role="img"
-       aria-label="{{ person.photo_alt|default:person.name }}"></div>
+  {# Фото поруч з ім'ям — декоративне (alt=""), ім'я читається із заголовка картки #}
+  {% if person.photo %}
+    {% image person.photo fill-224x298 alt="" class="aspect-[3/4] w-28 shrink-0 rounded-md object-cover" loading="lazy" %}
+  {% elif person.placeholder_photo %}
+    <div class="aspect-[3/4] w-28 shrink-0 rounded-md bg-gray-200"></div>
+  {% endif %}
   <div>
     {% if heading_level == 2 %}
       <h2 class="text-xl md:text-xl">{{ person.name }}</h2>

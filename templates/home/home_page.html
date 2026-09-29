@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load i18n %}
+{% load i18n wagtailcore_tags %}
 {% block body_class %}page-home{% endblock body_class %}
 {% block content %}
   <section class="bg-primary-50">
@@ -17,6 +17,34 @@
       <ul class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {% for block in page.tiles %}
           <li>{% include "components/task_tile.html" with tile=block.value %}</li>
+        {% endfor %}
+      </ul>
+    </section>
+  {% endif %}
+  {% if announcements %}
+    <section class="bg-gray-50 py-12" aria-labelledby="announcements-title">
+      <div class="container-site">
+        <div class="flex flex-wrap items-baseline justify-between gap-4">
+          <h2 id="announcements-title">{% translate "Оголошення" %}</h2>
+          <a href="{% pageurl announcements_index %}">{% translate "Усі оголошення" %}</a>
+        </div>
+        <ul class="mt-6 grid gap-4 md:grid-cols-3">
+          {% for item in announcements %}
+            <li>{% include "components/announcement_card.html" %}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </section>
+  {% endif %}
+  {% if latest_news %}
+    <section class="container-site py-12" aria-labelledby="news-title">
+      <div class="flex flex-wrap items-baseline justify-between gap-4">
+        <h2 id="news-title">{% translate "Новини" %}</h2>
+        <a href="{% pageurl news_index %}">{% translate "Усі новини" %}</a>
+      </div>
+      <ul class="mt-6 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {% for item in latest_news %}
+          <li>{% include "components/news_card.html" %}</li>
         {% endfor %}
       </ul>
     </section>

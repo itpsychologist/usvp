@@ -25,6 +25,12 @@ def tel_href(number):
 
 
 @register.filter
+def stream_values(stream):
+    """Значення блоків StreamField — для компонентів, що приймають простий список."""
+    return [block.value for block in stream or []]
+
+
+@register.filter
 def document_ext(doc):
     """Розширення файла: з документа Wagtail або зі словника демо-даних."""
     if isinstance(doc, dict):

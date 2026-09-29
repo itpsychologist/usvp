@@ -10,6 +10,30 @@ from wagtail.models import Locale, Orderable, TranslatableMixin
 from apps.core.blocks import PhoneBlock, ScheduleRowBlock
 
 
+def validate_image_description(image, field_name):
+    """Wagtail бере alt зображення з «Опису», а без нього — з назви файлу. Для змістовних фото
+    (обкладинка новини, фото простору) опис обов'язковий (WCAG 1.1.1)."""
+    if image is not None and not (image.description or "").strip():
+        raise ValidationError(
+            {
+                field_name: "Заповніть «Опис» зображення в бібліотеці (Зображення → редагувати): "
+                "він стане альтернативним текстом для людей, які не бачать фото."
+            }
+        )
+
+
+class TranslatableSnippet(TranslatableMixin, models.Model):
+    """База для перекладних snippets: без явно заданої мови запис створюється основною мовою."""
+
+    class Meta(TranslatableMixin.Meta):
+        abstract = True
+
+    def save(self, *args, **kwargs):
+        if self.locale_id is None:
+            self.locale = Locale.get_default()
+        super().save(*args, **kwargs)
+
+
 @register_setting(icon="site")
 class SiteSettings(BaseSiteSetting):
     """Контакти, графік і службові налаштування, що показуються в шапці, футері та на головній."""

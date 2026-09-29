@@ -155,6 +155,7 @@ def _news(count=3):
             "date": date(2026, 9, 25),
             "lead": "Короткий лід: одне-два речення про головне в новині.",
             "tag": "Ветеранам",
+            "placeholder_image": True,
         },
         {
             "title": "Зміни в порядку прийому громадян",
@@ -162,6 +163,7 @@ def _news(count=3):
             "date": date(2026, 9, 18),
             "lead": "Короткий лід: що змінюється і з якої дати.",
             "tag": "Прийом громадян",
+            "placeholder_image": True,
         },
         {
             "title": "Підсумки засідання комісії",
@@ -169,6 +171,7 @@ def _news(count=3):
             "date": date(2026, 9, 10),
             "lead": "Короткий лід: які рішення ухвалено.",
             "tag": "ВПО",
+            "placeholder_image": True,
         },
     ]
     return (items * 4)[:count]
@@ -456,12 +459,14 @@ def _page_context(name):
             ],
             "leaders": [
                 {
+                    "placeholder_photo": True,
                     "name": "Прізвище Ім'я По батькові",
                     "position": "Начальник управління",
                     "reception": "Особистий прийом: [день], [години]",
                     "phone": PHONE["number"],
                 },
                 {
+                    "placeholder_photo": True,
                     "name": "Прізвище Ім'я По батькові",
                     "position": "Заступник начальника",
                     "reception": "Особистий прийом: [день], [години]",

@@ -38,7 +38,13 @@ class LinkStructValue(blocks.StructValue):
         page = self.get("page")
         if page:
             return page.localized.url
+        document = self.get("document")
+        if document:
+            return document.url
         return self.get("url") or ""
+
+    def is_external(self):
+        return not self.get("page") and not self.get("document") and bool(self.get("url"))
 
 
 def validate_page_or_url(value):
@@ -227,6 +233,35 @@ class ButtonLinkBlock(blocks.StructBlock):
         value_class = LinkStructValue
 
 
+class LinkBlock(blocks.StructBlock):
+    """Посилання на нормативний акт чи інший ресурс: сторінка, документ або зовнішня адреса."""
+
+    title = blocks.CharBlock(
+        label="Назва", max_length=250, help_text="Напр. «Постанова КМУ від 01.01.2024 № 1»."
+    )
+    page = blocks.PageChooserBlock(label="Сторінка сайту", required=False)
+    document = DocumentChooserBlock(label="Документ", required=False)
+    url = blocks.URLBlock(
+        label="Зовнішнє посилання", required=False, help_text="Напр. на zakon.rada.gov.ua."
+    )
+
+    def clean(self, value):
+        value = super().clean(value)
+        if sum(bool(value.get(name)) for name in ("page", "document", "url")) != 1:
+            message = "Оберіть рівно одне: сторінку, документ або зовнішнє посилання."
+            raise StructBlockValidationError(
+                block_errors={
+                    name: ValidationError(message) for name in ("page", "document", "url")
+                }
+            )
+        return value
+
+    class Meta:
+        icon = "link"
+        label = "Посилання"
+        value_class = LinkStructValue
+
+
 class BodyStreamBlock(blocks.StreamBlock):
     """Конструктор вмісту сторінки. Для рендеру використовуйте prepare_body(): унікальні якорі
     заголовків і правильний рівень заголовків у картках, акордеонах і списках документів."""
@@ -271,16 +306,22 @@ def prepare_body(stream):
     seen = set(RESERVED_IDS)
     has_h2 = False
     items = []
+
+    def unique(base):
+        anchor, suffix = base, 2
+        while anchor in seen:
+            anchor, suffix = f"{base}-{suffix}", suffix + 1
+        seen.add(anchor)
+        return anchor
+
     for block in stream:
         extra = {"anchor": None, "heading_level": 3 if has_h2 else 2}
         if block.block_type == "heading":
-            base = heading_anchor(block.value["text"])
-            anchor, suffix = base, 2
-            while anchor in seen:
-                anchor, suffix = f"{base}-{suffix}", suffix + 1
-            seen.add(anchor)
-            extra["anchor"] = anchor
+            extra["anchor"] = unique(heading_anchor(block.value["text"]))
             has_h2 = has_h2 or block.value["level"] == "h2"
+        elif block.block_type == "table":
+            # id підпису таблиці: ним називається область прокрутки (aria-labelledby)
+            extra["anchor"] = unique(f"tablytsia-{heading_anchor(block.value['caption'])}")
         items.append((block, extra))
     return items
 

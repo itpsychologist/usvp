@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% load i18n wagtailcore_tags wagtailimages_tags site_tags %}
+{% block content %}
+  {% breadcrumbs page as breadcrumbs %}
+  {% section_nav page as section %}
+  <div class="container-site">
+    {% include "components/breadcrumbs.html" %}
+    <div class="grid gap-10 pb-10 {% if section %}lg:grid-cols-[18rem_1fr]{% endif %}">
+      <div class="min-w-0">
+        <h1>{{ page.title }}</h1>
+        {% if page.intro %}<p class="mt-4 max-w-prose text-lg text-gray-700">{{ page.intro }}</p>{% endif %}
+        {% if not entries %}
+          <p class="mt-8">{% translate "Інформація готується до оприлюднення." %}</p>
+        {% elif page.kind == "leadership" %}
+          <ul class="mt-8 grid gap-4 xl:grid-cols-2">
+            {% for person in entries %}
+              <li>{% include "components/person_card.html" with heading_level=2 %}</li>
+            {% endfor %}
+          </ul>
+        {% elif page.kind == "departments" %}
+          <div class="mt-8 space-y-10">
+            {% for department in entries %}
+              <section aria-labelledby="department-{{ department.pk }}" class="space-y-4">
+                <h2 id="department-{{ department.pk }}">{{ department.name }}</h2>
+                {% if department.functions %}<div class="prose-site">{{ department.functions|richtext }}</div>{% endif %}
+                {% blocktranslate asvar contact_title with name=department.name %}Контакти: {{ name }}{% endblocktranslate %}
+                {% include "components/contact_card.html" with contact=department heading_level=3 contact_title=contact_title %}
+                {% with people=department.people.all %}
+                  {% if people %}
+                    <h3 class="text-xl">{% translate "Працівники" %}</h3>
+                    <ul class="space-y-1">
+                      {% for person in people %}
+                        <li>
+                          <span class="font-medium">{{ person.name }}</span> — {{ person.position }}
+                        </li>
+                      {% endfor %}
+                    </ul>
+                  {% endif %}
+                {% endwith %}
+              </section>
+            {% endfor %}
+          </div>
+        {% elif page.kind == "specialists" %}
+          <div class="table-wrap mt-8"
+               role="region"
+               aria-labelledby="specialists-caption"
+               tabindex="0">
+            <table class="table-data">
+              <caption id="specialists-caption">{{ page.title }}</caption>
+              <thead>
+                <tr>
+                  <th scope="col">{% translate "Прізвище, ім'я, по батькові" %}</th>
+                  <th scope="col">{% translate "Територія" %}</th>
+                  <th scope="col">{% translate "Телефон" %}</th>
+                  <th scope="col">{% translate "Графік прийому" %}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for specialist in entries %}
+                  <tr>
+                    <th scope="row" class="border-b border-gray-200 bg-white">{{ specialist.name }}</th>
+                    <td>{{ specialist.territory }}</td>
+                    <td class="whitespace-nowrap">
+                      {% if specialist.phone %}
+                        <a href="tel:{{ specialist.phone|tel_href }}">{{ specialist.phone }}</a>
+                      {% endif %}
+                      {% if specialist.email %}
+                        <a href="mailto:{{ specialist.email }}" class="block wrap-anywhere">{{ specialist.email }}</a>
+                      {% endif %}
+                    </td>
+                    <td>{{ specialist.schedule }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        {% else %}
+          <ul class="mt-8 grid gap-6 xl:grid-cols-2">
+            {% for space in entries %}
+              <li>
+                <article class="card h-full overflow-hidden">
+                  {% if space.photo %}
+                    {% picture space.photo format-{avif,webp,jpeg} fill-{600x338,900x506} sizes="(min-width: 1280px) 600px, 100vw" class="aspect-[16/9] h-auto w-full object-cover" loading="lazy" %}
+                  {% endif %}
+                  <div class="space-y-3 p-5">
+                    <h2 class="text-xl md:text-2xl">{{ space.name }}</h2>
+                    <p class="flex gap-2">
+                      {% include "components/icon.html" with name="map-pin" class="mt-1 size-4 text-primary-700" %}
+                      <span><span class="sr-only">{% translate "Адреса:" %}</span> {{ space.address }}</span>
+                    </p>
+                    {% if space.hours %}
+                      <p class="flex gap-2">
+                        {% include "components/icon.html" with name="clock" class="mt-1 size-4 text-primary-700" %}
+                        <span><span class="sr-only">{% translate "Години роботи:" %}</span> {{ space.hours }}</span>
+                      </p>
+                    {% endif %}
+                    {% if space.phone %}
+                      <p class="flex gap-2">
+                        {% include "components/icon.html" with name="phone" class="mt-1 size-4 text-primary-700" %}
+                        <a href="tel:{{ space.phone|tel_href }}">{{ space.phone }}</a>
+                      </p>
+                    {% endif %}
+                    {% if space.services %}<div class="prose-site">{{ space.services|richtext }}</div>{% endif %}
+                    {% if space.map_url %}
+                      {% translate "Відкрити на Google Maps" as map_title %}
+                      <p>{% include "components/external_link.html" with url=space.map_url title=map_title %}</p>
+                    {% endif %}
+                  </div>
+                </article>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+      {% if section %}
+        <aside class="lg:order-first">
+          {% include "components/section_nav.html" %}
+        </aside>
+      {% endif %}
+    </div>
+  </div>
+{% endblock content %}

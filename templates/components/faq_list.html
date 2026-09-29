@@ -1,0 +1,18 @@
+{% load wagtailcore_tags %}
+{% comment %}
+  Питання й відповіді на нативних <details>. Параметри: items — значення FaqItemBlock
+  (question, answer — RichText). Заголовків у summary не ставимо: summary має роль кнопки.
+{% endcomment %}
+<div class="divide-y divide-gray-300 rounded-lg border border-gray-300">
+  {% for item in items %}
+    <details class="group">
+      <summary class="flex min-h-12 cursor-pointer list-none items-center justify-between gap-4 px-4 py-3 font-medium text-primary-900 hover:bg-gray-50 [&::-webkit-details-marker]:hidden">
+        <span>{{ item.question }}</span>
+        <span class="text-primary-700 group-open:rotate-180">
+          {% include "components/icon.html" with name="chevron-down" %}
+        </span>
+      </summary>
+      <div class="prose-site px-4 pt-1 pb-4">{{ item.answer|richtext }}</div>
+    </details>
+  {% endfor %}
+</div>

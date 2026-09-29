@@ -30,6 +30,8 @@ def test_setup_roles_is_idempotent(roles):
 def test_editor_permissions(roles):
     editor = make_user("editor", EDITORS)
     assert editor.has_perm("wagtailadmin.access_admin")
+    assert editor.has_perm("organization.change_person")
+    assert editor.has_perm("news.add_newstopic")
     assert not editor.has_perm("core.change_sitesettings")
     assert not editor.has_perm("core.change_navigationmenu")
     assert not editor.has_perm("auth.change_user")

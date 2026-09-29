@@ -1,16 +1,19 @@
-{% load i18n %}
+{% load i18n wagtailimages_tags %}
 {% comment %}
-  Картка новини. Параметри: item — {title, url, date, lead, tag, image_alt}; heading_level — 2 або 3 (типово 3).
-  Зображення у wireframe — сіра заглушка; у фазі 3 — Wagtail rendition зі srcset і alt.
+  Картка новини. Параметри: item — NewsPage або {title, url, date, lead, tag, placeholder_image};
+  heading_level — 2 або 3 (типово 3). Обкладинка в картці декоративна (alt=""): зміст передає заголовок.
+  Сіра заглушка — лише для макетів /styleguide/ (placeholder_image).
 {% endcomment %}
 <article class="card relative flex h-full flex-col overflow-hidden hover:border-primary-700">
-  <div class="aspect-[16/9] bg-gray-200"
-       role="img"
-       aria-label="{{ item.image_alt|default:_("Ілюстрація до новини") }}"></div>
+  {% if item.cover %}
+    {% picture item.cover format-{avif,webp,jpeg} fill-{400x225,800x450} sizes="(min-width: 1024px) 400px, 100vw" alt="" class="aspect-[16/9] h-auto w-full object-cover" loading="lazy" %}
+  {% elif item.placeholder_image %}
+    <div class="aspect-[16/9] bg-gray-200"></div>
+  {% endif %}
   <div class="flex flex-1 flex-col p-5">
     <p class="flex flex-wrap items-center gap-2 text-sm text-gray-600">
       <time datetime="{{ item.date|date:'Y-m-d' }}">{{ item.date|date:"j E Y" }}</time>
-      {% if item.tag %}<span class="badge">{{ item.tag }}</span>{% endif %}
+      {% if item.tag %}<span class="badge"><span class="sr-only">{% translate "Тема:" %} </span>{{ item.tag }}</span>{% endif %}
     </p>
     {% if heading_level == 2 %}
       <h2 class="mt-2 text-xl md:text-xl">

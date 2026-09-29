@@ -7,8 +7,11 @@ from wagtail.images.tests.utils import get_test_image_file
 from wagtail.models import Page
 from wagtail.test.utils import WagtailPageTestCase
 
+from apps.contacts.models import ContactPage
 from apps.home.models import HomePage
-from apps.pages.models import SectionIndexPage, StandardPage
+from apps.news.models import AnnouncementIndexPage, AnnouncementPage, NewsIndexPage, NewsPage
+from apps.organization.models import DirectoryPage
+from apps.pages.models import ProgramPage, SectionIndexPage, ServicePage, StandardPage
 from tests.factories import (
     SectionIndexPageFactory,
     StandardPageFactory,
@@ -19,10 +22,24 @@ from tests.factories import (
 
 class TestPageHierarchy(WagtailPageTestCase):
     def test_home_children(self):
-        self.assertAllowedSubpageTypes(HomePage, {SectionIndexPage, StandardPage})
+        self.assertAllowedSubpageTypes(
+            HomePage,
+            {SectionIndexPage, StandardPage, NewsIndexPage, AnnouncementIndexPage, ContactPage},
+        )
 
     def test_section_children(self):
-        self.assertAllowedSubpageTypes(SectionIndexPage, {SectionIndexPage, StandardPage})
+        self.assertAllowedSubpageTypes(
+            SectionIndexPage,
+            {SectionIndexPage, StandardPage, ServicePage, ProgramPage, DirectoryPage},
+        )
+
+    def test_leaf_pages(self):
+        for model in (ServicePage, ProgramPage, DirectoryPage, ContactPage):
+            self.assertAllowedSubpageTypes(model, set())
+        self.assertAllowedSubpageTypes(NewsIndexPage, {NewsPage})
+        self.assertAllowedSubpageTypes(AnnouncementIndexPage, {AnnouncementPage})
+        self.assertCanNotCreateAt(HomePage, ServicePage)
+        self.assertCanNotCreateAt(SectionIndexPage, NewsPage)
 
     def test_standard_page_children(self):
         self.assertAllowedSubpageTypes(StandardPage, {StandardPage})
@@ -105,7 +122,8 @@ def test_standard_page_renders_all_blocks(client, section):
     assert "На цій сторінці" in html  # три заголовки H2 → є зміст
     assert 'alt="Опис фото"' in html
     assert "Зразок заяви" in html
-    assert "<caption>Графік</caption>" in html
+    assert '<caption id="tablytsia-графік">Графік</caption>' in html
+    assert 'aria-labelledby="tablytsia-графік"' in html
     assert 'href="tel:+380536170000"' in html
     assert f'href="{section.url}"' in html
     assert 'aria-current="page"' in html  # бокова навігація розділу

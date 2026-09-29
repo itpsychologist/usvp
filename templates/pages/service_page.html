@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% load i18n wagtailcore_tags site_tags %}
+{% block meta %}
+  <script type="application/ld+json">{{ page.schema_org }}</script>
+{% endblock meta %}
+{% block content %}
+  {% breadcrumbs page as breadcrumbs %}
+  {% section_nav page as section %}
+  {% with toc=page.toc %}
+    <div class="container-site">
+      {% include "components/breadcrumbs.html" %}
+      <div class="grid gap-10 pb-10 {% if section %}lg:grid-cols-[18rem_1fr]{% endif %}">
+        <article class="min-w-0">
+          <p class="badge">{% translate "Послуга" %}</p>
+          <h1 class="mt-3">{{ page.title }}</h1>
+          {% if page.intro %}<p class="mt-4 max-w-prose text-lg text-gray-700">{{ page.intro }}</p>{% endif %}
+          {% if page.term or page.cost or page.department %}
+            {# Коротко про послугу: відповіді на головні питання одразу під заголовком #}
+            <dl class="mt-8 grid gap-px overflow-hidden rounded-lg border border-gray-300 bg-gray-300 sm:grid-cols-3">
+              {% if page.term %}
+                <div class="bg-white p-4">
+                  <dt class="text-sm text-gray-600">{% translate "Строк" %}</dt>
+                  <dd class="mt-1 font-medium">
+                    {{ page.term }}
+                  </dd>
+                </div>
+              {% endif %}
+              {% if page.cost %}
+                <div class="bg-white p-4">
+                  <dt class="text-sm text-gray-600">{% translate "Вартість" %}</dt>
+                  <dd class="mt-1 font-medium">
+                    {{ page.cost }}
+                  </dd>
+                </div>
+              {% endif %}
+              {% if page.department %}
+                <div class="bg-white p-4">
+                  <dt class="text-sm text-gray-600">{% translate "Де отримати" %}</dt>
+                  <dd class="mt-1 font-medium">
+                    <a href="#how">{{ page.department.name }}</a>
+                  </dd>
+                </div>
+              {% endif %}
+            </dl>
+          {% endif %}
+          {% if toc|length > 2 %}
+            <div class="mt-8 max-w-prose">{% include "components/page_toc.html" %}</div>
+          {% endif %}
+          <div class="prose-site mt-10">
+            {% if page.eligibility %}
+              <h2 id="who">{% translate "Хто має право" %}</h2>
+              {{ page.eligibility|richtext }}
+            {% endif %}
+            {% if page.required_documents or page.forms %}
+              <h2 id="documents">{% translate "Які документи потрібні" %}</h2>
+              {{ page.required_documents|richtext }}
+              {% if page.forms %}
+                <h3>{% translate "Бланки та зразки" %}</h3>
+                {% include "components/document_list.html" with documents=page.forms|stream_values %}
+              {% endif %}
+            {% endif %}
+            {% if page.how_to_apply or page.department %}
+              <h2 id="how">{% translate "Як отримати" %}</h2>
+              {{ page.how_to_apply|richtext }}
+              {% if page.department %}
+                {% include "components/contact_card.html" with contact=page.department heading_level=3 %}
+              {% endif %}
+            {% endif %}
+            {% if page.body %}
+              <h2 id="more">{% translate "Додаткова інформація" %}</h2>
+            {% endif %}
+            {% for block, extra in page.body_items %}
+              {% include_block block with anchor=extra.anchor heading_level=extra.heading_level %}
+            {% endfor %}
+            {% if page.legal_basis %}
+              <h2 id="legal">{% translate "Підстави" %}</h2>
+              <ul>
+                {% for link in page.legal_basis %}
+                  <li>{% include "components/link_item.html" with link=link.value %}</li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+            {% if page.faq %}
+              <h2 id="faq">{% translate "Часті питання" %}</h2>
+              {% include "components/faq_list.html" with items=page.faq|stream_values %}
+            {% endif %}
+          </div>
+          {% if page.last_published_at %}
+            <p class="mt-10 text-sm text-gray-600">
+              {% translate "Сторінку оновлено:" %}
+              <time datetime="{{ page.last_published_at|date:'Y-m-d' }}">{{ page.last_published_at|date:"d.m.Y" }}</time>
+            </p>
+          {% endif %}
+        </article>
+        {% if section %}
+          <aside class="lg:order-first">
+            {% include "components/section_nav.html" %}
+          </aside>
+        {% endif %}
+      </div>
+    </div>
+  {% endwith %}
+{% endblock content %}

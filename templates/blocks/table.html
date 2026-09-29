@@ -1,8 +1,11 @@
 {% load wagtailcore_tags %}
-{# Таблиця з назвою (caption) і заголовками стовпців. tabindex — щоб широку таблицю можна було прокрутити з клавіатури #}
-<div class="table-wrap" tabindex="0">
+{# Таблиця з назвою (caption) і заголовками стовпців. Обгортка — іменована область із tabindex, щоб широку таблицю можна було прокрутити з клавіатури; id підпису дає prepare_body #}
+<div class="table-wrap"
+     role="region"
+     aria-labelledby="{{ anchor }}"
+     tabindex="0">
   <table class="table-data">
-    <caption>{{ value.caption }}</caption>
+    <caption id="{{ anchor }}">{{ value.caption }}</caption>
     <thead>
       <tr>
         {% for column in value.table.columns %}<th scope="col">{{ column.heading }}</th>{% endfor %}

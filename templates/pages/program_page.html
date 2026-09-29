@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% load i18n wagtailcore_tags site_tags %}
+{% block content %}
+  {% breadcrumbs page as breadcrumbs %}
+  {% section_nav page as section %}
+  <div class="container-site">
+    {% include "components/breadcrumbs.html" %}
+    <div class="grid gap-10 pb-10 {% if section %}lg:grid-cols-[18rem_1fr]{% endif %}">
+      <article class="min-w-0">
+        <p class="flex flex-wrap items-center gap-2">
+          <span class="badge">{% translate "Програма" %}</span>
+          <span class="badge {% if page.status == 'active' %}bg-success-100 text-success-700{% endif %}">{{ page.status_label }}</span>
+        </p>
+        <h1 class="mt-3">{{ page.title }}</h1>
+        {% if page.intro %}<p class="mt-4 max-w-prose text-lg text-gray-700">{{ page.intro }}</p>{% endif %}
+        <dl class="mt-8 grid gap-px overflow-hidden rounded-lg border border-gray-300 bg-gray-300 sm:grid-cols-3">
+          <div class="bg-white p-4">
+            <dt class="text-sm text-gray-600">{% translate "Період дії" %}</dt>
+            <dd class="mt-1 font-medium">
+              {{ page.period }}
+            </dd>
+          </div>
+          {% if page.funding %}
+            <div class="bg-white p-4">
+              <dt class="text-sm text-gray-600">{% translate "Обсяг фінансування" %}</dt>
+              <dd class="mt-1 font-medium">
+                {{ page.funding }}
+              </dd>
+            </div>
+          {% endif %}
+          {% if page.responsible %}
+            <div class="bg-white p-4">
+              <dt class="text-sm text-gray-600">{% translate "Відповідальний виконавець" %}</dt>
+              <dd class="mt-1 font-medium">
+                {{ page.responsible.name }}
+              </dd>
+            </div>
+          {% endif %}
+        </dl>
+        <div class="prose-site mt-10">
+          {% if page.goal %}
+            <h2>{% translate "Мета програми" %}</h2>
+            {{ page.goal|richtext }}
+          {% endif %}
+          {% for block, extra in page.body_items %}
+            {% include_block block with anchor=extra.anchor heading_level=extra.heading_level %}
+          {% endfor %}
+          {% if page.documents %}
+            <h2>{% translate "Документи програми" %}</h2>
+            {% include "components/document_list.html" with documents=page.documents|stream_values %}
+          {% endif %}
+          {% if page.reports %}
+            <h2>{% translate "Звіти про виконання" %}</h2>
+            {% include "components/document_list.html" with documents=page.reports|stream_values %}
+          {% endif %}
+        </div>
+        {% if page.last_published_at %}
+          <p class="mt-10 text-sm text-gray-600">
+            {% translate "Сторінку оновлено:" %}
+            <time datetime="{{ page.last_published_at|date:'Y-m-d' }}">{{ page.last_published_at|date:"d.m.Y" }}</time>
+          </p>
+        {% endif %}
+      </article>
+      {% if section %}
+        <aside class="lg:order-first">
+          {% include "components/section_nav.html" %}
+        </aside>
+      {% endif %}
+    </div>
+  </div>
+{% endblock content %}

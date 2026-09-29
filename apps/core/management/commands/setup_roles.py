@@ -33,8 +33,24 @@ COLLECTION_PERMISSIONS = [
     "wagtaildocs.choose_document",
 ]
 
-# Загальні права: контент-менеджер лише входить в адмінку
-EDITOR_PERMISSIONS = ["wagtailadmin.access_admin"]
+# Довідники (snippets), які веде контент-менеджер: структура управління й теми новин
+CONTENT_SNIPPETS = [
+    ("organization", "department"),
+    ("organization", "person"),
+    ("organization", "veteranspecialist"),
+    ("organization", "veteranspace"),
+    ("news", "newstopic"),
+]
+
+# Загальні права контент-менеджера: вхід в адмінку й ведення довідників
+EDITOR_PERMISSIONS = [
+    "wagtailadmin.access_admin",
+    *[
+        f"{app}.{action}_{model}"
+        for app, model in CONTENT_SNIPPETS
+        for action in ("add", "change", "delete")
+    ],
+]
 
 # Адміністратор додатково керує налаштуваннями сайту, меню, редиректами, користувачами й групами
 ADMIN_PERMISSIONS = [

@@ -1,0 +1,14 @@
+{% load i18n site_tags %}
+{% comment %}
+  Посилання з LinkBlock (сторінка, документ або зовнішня адреса). Параметри: link — значення блоку.
+  Для документа тип і розмір — у тексті посилання (WCAG 2.4.4).
+{% endcomment %}
+{% if link.document %}
+  <a href="{{ link.href }}" download>{{ link.title }}
+    <span class="text-sm text-gray-600">({{ link.document|document_ext|upper }}{% with size=link.document|document_size %}{% if size %}, {{ size }}{% endif %}{% endwith %})</span>
+  </a>
+{% elif link.is_external %}
+  {% include "components/external_link.html" with url=link.href title=link.title %}
+{% else %}
+  <a href="{{ link.href }}">{{ link.title }}</a>
+{% endif %}

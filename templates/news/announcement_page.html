@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load i18n wagtailcore_tags site_tags %}
+{% block content %}
+  {% breadcrumbs page as breadcrumbs %}
+  <div class="container-site">
+    {% include "components/breadcrumbs.html" %}
+    <article class="mx-auto max-w-3xl pb-10">
+      <p class="flex flex-wrap items-center gap-2 text-gray-600">
+        {% include "components/icon.html" with name="megaphone" class="size-4" %}
+        <time datetime="{{ page.date|date:'Y-m-d' }}">{{ page.date|date:"j E Y" }}</time>
+        {% if page.archived %}
+          <span class="badge">{% translate "Архів" %}</span>
+        {% else %}
+          <span class="badge bg-success-100 text-success-700">{% translate "Актуальне" %}</span>
+        {% endif %}
+      </p>
+      <h1 class="mt-3">{{ page.title }}</h1>
+      {% if page.intro %}<p class="mt-4 text-lg text-gray-700">{{ page.intro }}</p>{% endif %}
+      {% if page.archived %}
+        <div class="mt-6">
+          {% translate "Оголошення втратило актуальність" as archived_title %}
+          {% blocktranslate asvar archived_text with date=page.valid_until|date:"j E Y" %}Строк дії оголошення завершився {{ date }}.{% endblocktranslate %}
+          {% include "components/callout.html" with variant="warning" title=archived_title text=archived_text %}
+        </div>
+      {% endif %}
+      {% if page.event_date or page.valid_until %}
+        <dl class="mt-6 grid gap-px overflow-hidden rounded-lg border border-gray-300 bg-gray-300 sm:grid-cols-2">
+          {% if page.event_date %}
+            <div class="bg-white p-4">
+              <dt class="text-sm text-gray-600">{% translate "Дата й час події" %}</dt>
+              <dd class="mt-1 font-medium">
+                <time datetime="{{ page.event_date|date:'c' }}">{{ page.event_date|date:"j E Y, H:i" }}</time>
+              </dd>
+            </div>
+          {% endif %}
+          {% if page.valid_until %}
+            <div class="bg-white p-4">
+              <dt class="text-sm text-gray-600">{% translate "Діє до" %}</dt>
+              <dd class="mt-1 font-medium">
+                <time datetime="{{ page.valid_until|date:'Y-m-d' }}">{{ page.valid_until|date:"j E Y" }}</time>
+              </dd>
+            </div>
+          {% endif %}
+        </dl>
+      {% endif %}
+      <div class="prose-site mt-8">
+        {% for block, extra in page.body_items %}
+          {% include_block block with anchor=extra.anchor heading_level=extra.heading_level %}
+        {% endfor %}
+      </div>
+    </article>
+  </div>
+{% endblock content %}

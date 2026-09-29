@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% load i18n wagtailcore_tags wagtailroutablepage_tags site_tags %}
+{% block meta %}
+  <link rel="alternate"
+        type="application/rss+xml"
+        title="{{ page.title }}"
+        href="{% routablepageurl page 'rss' %}">
+{% endblock meta %}
+{% block title %}
+  {{ page.title }}
+  {% if news.number > 1 %}
+    — {% blocktranslate with number=news.number %}сторінка {{ number }}{% endblocktranslate %}
+  {% endif %}
+{% endblock title %}
+{% block content %}
+  {% breadcrumbs page as breadcrumbs %}
+  <div class="container-site pb-10">
+    {% include "components/breadcrumbs.html" %}
+    <div class="flex flex-wrap items-baseline justify-between gap-4">
+      <h1 class="mt-2">{{ page.title }}</h1>
+      <a href="{% routablepageurl page 'rss' %}"
+         class="inline-flex items-center gap-2">
+        {% include "components/icon.html" with name="newspaper" class="size-4" %}
+        {% translate "RSS-стрічка новин" %}
+      </a>
+    </div>
+    {% if page.intro %}<p class="mt-4 max-w-prose text-lg text-gray-700">{{ page.intro }}</p>{% endif %}
+    {% if years or topics %}
+      <form method="get"
+            class="mt-8 flex flex-wrap items-end gap-4 rounded-lg bg-gray-100 p-5"
+            aria-label="{% translate 'Фільтр новин' %}">
+        {% if years %}
+          <div>
+            <label for="filter-year" class="field-label">{% translate "Рік" %}</label>
+            <select id="filter-year" name="year" class="field-input w-40">
+              <option value="">{% translate "Усі роки" %}</option>
+              {% for year in years %}
+                <option value="{{ year }}"
+                        {% if selected_year == year|stringformat:'s' %}selected{% endif %}>{{ year }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        {% endif %}
+        {% if topics %}
+          <div>
+            <label for="filter-topic" class="field-label">{% translate "Тема" %}</label>
+            <select id="filter-topic" name="topic" class="field-input w-64">
+              <option value="">{% translate "Усі теми" %}</option>
+              {% for topic in topics %}
+                <option value="{{ topic.slug }}"
+                        {% if selected_topic == topic.slug %}selected{% endif %}>{{ topic.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        {% endif %}
+        <button type="submit" class="btn-primary">{% translate "Показати" %}</button>
+        {% if is_filtered %}
+          <a href="{% pageurl page %}" class="btn-link">{% translate "Скинути фільтри" %}</a>
+        {% endif %}
+      </form>
+    {% endif %}
+    <p class="mt-6 text-gray-700" role="status">
+      {% blocktranslate with counter=news.paginator.count %}Знайдено новин: {{ counter }}{% endblocktranslate %}
+    </p>
+    {% if not news and is_filtered %}
+      <p class="mt-4">{% translate "Спробуйте змінити або скинути фільтри." %}</p>
+    {% endif %}
+    {% if news %}
+      <ul class="mt-6 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {% for item in news %}
+          <li>{% include "components/news_card.html" with heading_level=2 %}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    {% if pagination %}
+      {% include "components/pagination.html" %}
+    {% endif %}
+  </div>
+{% endblock content %}

@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load i18n wagtailcore_tags site_tags %}
+{% block title %}
+  {{ page.title }}
+  {% if show_archive %}— {% translate "Архів" %}{% endif %}
+  {% if announcements.number > 1 %}
+    — {% blocktranslate with number=announcements.number %}сторінка {{ number }}{% endblocktranslate %}
+  {% endif %}
+{% endblock title %}
+{% block content %}
+  {% breadcrumbs page as breadcrumbs %}
+  <div class="container-site pb-10">
+    {% include "components/breadcrumbs.html" %}
+    <h1 class="mt-2">{{ page.title }}</h1>
+    {% if page.intro %}<p class="mt-4 max-w-prose text-lg text-gray-700">{{ page.intro }}</p>{% endif %}
+    <nav class="mt-8 border-b border-gray-300"
+         aria-label="{% translate 'Актуальні оголошення й архів' %}">
+      <ul class="flex gap-2">
+        <li>
+          <a href="{% pageurl page %}"
+             class="inline-flex min-h-11 items-center border-b-4 px-3 font-medium no-underline {% if not show_archive %}border-primary-700 text-primary-900{% else %}border-transparent{% endif %}"
+             {% if not show_archive %}aria-current="page"{% endif %}>{% translate "Актуальні" %}</a>
+        </li>
+        <li>
+          <a href="{% pageurl page %}?archive=1"
+             class="inline-flex min-h-11 items-center border-b-4 px-3 font-medium no-underline {% if show_archive %}border-primary-700 text-primary-900{% else %}border-transparent{% endif %}"
+             {% if show_archive %}aria-current="page"{% endif %}>{% translate "Архів" %}</a>
+        </li>
+      </ul>
+    </nav>
+    {% if announcements %}
+      <ul class="mt-8 grid gap-4 md:grid-cols-2">
+        {% for item in announcements %}
+          <li>{% include "components/announcement_card.html" with heading_level=2 %}</li>
+        {% endfor %}
+      </ul>
+    {% elif show_archive %}
+      <p class="mt-8">{% translate "В архіві поки немає оголошень." %}</p>
+    {% else %}
+      <p class="mt-8">{% translate "Зараз актуальних оголошень немає. Попередні оголошення — в архіві." %}</p>
+    {% endif %}
+    {% if pagination %}
+      {% include "components/pagination.html" %}
+    {% endif %}
+  </div>
+{% endblock content %}

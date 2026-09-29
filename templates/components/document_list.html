@@ -15,7 +15,7 @@
         <div class="min-w-0 flex-1">
           <a href="{{ doc.url }}" class="font-medium wrap-anywhere" download>
             {{ doc.title }}
-            <span class="sr-only">({{ ext|upper }}{% if size %}, {{ size }}{% endif %})</span>
+            <span class="sr-only">({{ ext|upper }}{% if size %}, {{ size }}{% endif %}{% if doc.date %}, {{ doc.date|date:"d.m.Y" }}{% endif %})</span>
           </a>
           <p class="mt-1 text-sm text-gray-600" aria-hidden="true">
             {{ ext|upper }}

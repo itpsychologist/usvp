@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load i18n wagtailcore_tags site_tags %}
+{% block content %}
+  {% breadcrumbs page as breadcrumbs %}
+  <div class="container-site pb-10">
+    {% include "components/breadcrumbs.html" %}
+    <h1 class="mt-2">{{ page.title }}</h1>
+    {% if page.intro %}<p class="mt-4 max-w-prose text-lg text-gray-700">{{ page.intro }}</p>{% endif %}
+    {% if site_info %}
+      <div class="mt-8 grid gap-8 lg:grid-cols-2">
+        <section class="min-w-0 rounded-lg bg-primary-50 p-6"
+                 aria-labelledby="main-contacts">
+          <h2 id="main-contacts" class="text-2xl md:text-2xl">{% translate "Управління" %}</h2>
+          <address class="mt-4 space-y-3 not-italic">
+            {% if site_info.address %}
+              <p class="flex gap-3">
+                {% include "components/icon.html" with name="map-pin" class="mt-1 size-5 text-primary-700" %}
+                {{ site_info.address }}
+              </p>
+            {% endif %}
+            {% for phone in site_info.phones %}
+              <p class="flex gap-3">
+                {% include "components/icon.html" with name="phone" class="mt-1 size-5 text-primary-700" %}
+                <span>
+                  {% if phone.label %}<span class="block text-sm text-gray-600">{{ phone.label }}</span>{% endif %}
+                  <a href="tel:{{ phone.href }}">{{ phone.number }}</a>
+                </span>
+              </p>
+            {% endfor %}
+            {% if site_info.email %}
+              <p class="flex gap-3">
+                {% include "components/icon.html" with name="mail" class="mt-1 size-5 text-primary-700" %}
+                <a href="mailto:{{ site_info.email }}" class="wrap-anywhere">{{ site_info.email }}</a>
+              </p>
+            {% endif %}
+          </address>
+          {% if site_info.map_url or site_info.facebook_url %}
+            <ul class="mt-6 space-y-2">
+              {% if site_info.map_url %}
+                {% translate "Відкрити на Google Maps" as link_title %}
+                <li>{% include "components/external_link.html" with url=site_info.map_url title=link_title %}</li>
+              {% endif %}
+              {% if site_info.facebook_url %}
+                {% translate "Сторінка у Facebook" as link_title %}
+                <li>{% include "components/external_link.html" with url=site_info.facebook_url title=link_title %}</li>
+              {% endif %}
+            </ul>
+          {% endif %}
+        </section>
+        {% if site_info.schedule %}
+          <section class="min-w-0" aria-labelledby="schedule-title">
+            <h2 id="schedule-title" class="text-2xl md:text-2xl">{% translate "Графік роботи" %}</h2>
+            <div class="mt-4">{% include "components/schedule.html" with schedule=site_info.schedule %}</div>
+          </section>
+        {% endif %}
+      </div>
+    {% endif %}
+    {% if page.how_to_apply %}
+      <section class="mt-12" aria-labelledby="appeal-title">
+        <h2 id="appeal-title">{% translate "Як звернутися" %}</h2>
+        <div class="prose-site mt-6">
+          {% for block, extra in page.body_items %}
+            {% include_block block with anchor=extra.anchor heading_level=extra.heading_level %}
+          {% endfor %}
+        </div>
+      </section>
+    {% endif %}
+    {% if leaders %}
+      <section class="mt-12" aria-labelledby="leaders-title">
+        <h2 id="leaders-title">{% translate "Особистий прийом керівництва" %}</h2>
+        <ul class="mt-6 grid gap-4 lg:grid-cols-2">
+          {% for person in leaders %}
+            <li>{% include "components/person_card.html" %}</li>
+          {% endfor %}
+        </ul>
+      </section>
+    {% endif %}
+    {% if departments %}
+      <section class="mt-12" aria-labelledby="departments-title">
+        <h2 id="departments-title">{% translate "Відділи" %}</h2>
+        <ul class="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {% for contact in departments %}
+            <li>{% include "components/contact_card.html" %}</li>
+          {% endfor %}
+        </ul>
+      </section>
+    {% endif %}
+  </div>
+{% endblock content %}
