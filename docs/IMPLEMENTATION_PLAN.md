@@ -120,7 +120,7 @@ EN-версія має ту саму ієрархію під `/en/…`. Непе
 | Фаза | Зміст | Орієнтовно |
 |---|---|---|
 | **0. Фундамент** | `uv init`, Django 5.2 + Wagtail, settings split, PostgreSQL у Docker, `.env.example`, ruff/djlint/pre-commit, pytest, GitHub Actions, `CLAUDE.md`, project skills і хуки, записати `docs/IMPLEMENTATION_PLAN.md` і `docs/STACK.md` | 2–3 дні |
-| **1. Дизайн** | Wireframes ключових шаблонів (головна, розділ, послуга, новина, реєстр, контакти), дизайн-токени, UI-кіт на Tailwind, погодження із замовником. *Зроблено: токени, UI-кіт і wireframes на `/styleguide/`, опис у [DESIGN.md](DESIGN.md); чекає погодження із замовником* | 1 тиждень |
+| **1. Дизайн** | Wireframes ключових шаблонів (головна, розділ, послуга, новина, реєстр, контакти), дизайн-токени, UI-кіт на Tailwind, погодження із замовником. *Завершено: токени, UI-кіт і wireframes на `/styleguide/`, опис у [DESIGN.md](DESIGN.md). Дизайн погоджено 29.09.2026; герб і ліцензія контенту ще відкриті* | 1 тиждень |
 | **2. Ядро CMS** | `core` (SiteSettings, StreamField-блоки, меню), `base.html`, header/footer, HomePage, SectionIndexPage, StandardPage, ролі й групи, 2FA, axes | 1 тиждень |
 | **3. Контентні типи** | ServicePage, ProgramPage, Person/Department/VeteranSpecialist/VeteranSpace, News/Announcements (архів, фільтри, RSS), ContactPage | 1–1.5 тижня |
 | **4. Публічна інформація** | Реєстр (модель, адмінка, список із фільтрами й пошуком, експорт CSV), шаблони запитів, службові сторінки | 3–4 дні |
