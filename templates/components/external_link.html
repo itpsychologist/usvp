@@ -1,0 +1,10 @@
+{% load i18n %}
+{# Посилання на зовнішній сайт (без вбудованих віджетів). Параметри: url, title, on_dark #}
+<a href="{{ url }}"
+   class="inline-flex items-center gap-2 {% if on_dark %}min-h-11 text-white hover:text-primary-100{% endif %}"
+   rel="noopener noreferrer"
+   target="_blank">
+  {{ title }}
+  {% include "components/icon.html" with name="external-link" class="size-4" %}
+  <span class="sr-only">({% translate "відкривається в новій вкладці" %})</span>
+</a>

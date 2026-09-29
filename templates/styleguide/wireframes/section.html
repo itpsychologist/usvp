@@ -1,0 +1,37 @@
+{% extends "styleguide/base.html" %}
+{% block title %}
+  Ветеранська політика (макет)
+{% endblock title %}
+{% block content %}
+  {# Розділ «Ветеранська політика» показує допустимий оливковий акцент #}
+  <div class="border-b-4 border-veteran-600 bg-veteran-100">
+    <div class="container-site pb-10">
+      {% include "components/breadcrumbs.html" %}
+      <h1 class="mt-2">Ветеранська політика</h1>
+      <p class="mt-4 max-w-prose text-lg text-gray-700">
+        Текст-заглушка: вступ до розділу — для кого він і що тут можна знайти. Два-три речення.
+      </p>
+    </div>
+  </div>
+  <div class="container-site py-10">
+    <ul class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      {% for card in children %}
+        <li>{% include "components/card_link.html" with heading_level=2 %}</li>
+      {% endfor %}
+    </ul>
+    <div class="mt-12 grid gap-10 lg:grid-cols-3">
+      <section class="lg:col-span-2" aria-labelledby="faq-title">
+        <h2 id="faq-title">Часті питання</h2>
+        <div class="mt-6">{% include "components/accordion.html" with items=faq %}</div>
+      </section>
+      <section aria-labelledby="section-announcements">
+        <h2 id="section-announcements">Оголошення розділу</h2>
+        <ul class="mt-6 space-y-4">
+          {% for item in announcements %}
+            <li>{% include "components/announcement_card.html" %}</li>
+          {% endfor %}
+        </ul>
+      </section>
+    </div>
+  </div>
+{% endblock content %}

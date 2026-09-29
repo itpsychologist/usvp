@@ -1,0 +1,58 @@
+{% load i18n %}
+{% comment %}
+  Контактна картка відділу. Параметри: contact — {title, address, phone, phone_href, email, hours, room};
+  heading_level (типово 3).
+{% endcomment %}
+<section class="card p-5">
+  {% if heading_level == 2 %}
+    <h2 class="text-xl md:text-xl">{{ contact.title }}</h2>
+  {% else %}
+    <h3 class="text-xl md:text-xl">{{ contact.title }}</h3>
+  {% endif %}
+  <dl class="mt-3 space-y-2 text-base">
+    {% if contact.address %}
+      <div class="flex gap-2">
+        <dt>
+          {% include "components/icon.html" with name="map-pin" class="mt-1 size-4 text-primary-700" %}
+          <span class="sr-only">{% translate "Адреса" %}</span>
+        </dt>
+        <dd>
+          {{ contact.address }}{% if contact.room %}<span class="block">{{ contact.room }}</span>{% endif %}
+        </dd>
+      </div>
+    {% endif %}
+    {% if contact.phone %}
+      <div class="flex gap-2">
+        <dt>
+          {% include "components/icon.html" with name="phone" class="mt-1 size-4 text-primary-700" %}
+          <span class="sr-only">{% translate "Телефон" %}</span>
+        </dt>
+        <dd>
+          <a href="tel:{{ contact.phone_href }}">{{ contact.phone }}</a>
+        </dd>
+      </div>
+    {% endif %}
+    {% if contact.email %}
+      <div class="flex gap-2">
+        <dt>
+          {% include "components/icon.html" with name="mail" class="mt-1 size-4 text-primary-700" %}
+          <span class="sr-only">{% translate "Електронна пошта" %}</span>
+        </dt>
+        <dd>
+          <a href="mailto:{{ contact.email }}" class="wrap-anywhere">{{ contact.email }}</a>
+        </dd>
+      </div>
+    {% endif %}
+    {% if contact.hours %}
+      <div class="flex gap-2">
+        <dt>
+          {% include "components/icon.html" with name="clock" class="mt-1 size-4 text-primary-700" %}
+          <span class="sr-only">{% translate "Години прийому" %}</span>
+        </dt>
+        <dd>
+          {{ contact.hours }}
+        </dd>
+      </div>
+    {% endif %}
+  </dl>
+</section>

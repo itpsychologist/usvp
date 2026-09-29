@@ -1,0 +1,57 @@
+{% load i18n %}
+{% comment %}
+  Головне меню для ширини ≥ 1024px: пункти з підрозділами відкривають мегаменю (патерн disclosure). Без JS замість кнопок показуються звичайні посилання на лендинги розділів.
+{% endcomment %}
+<nav class="relative hidden bg-primary-800 lg:block"
+     aria-label="{% translate 'Головне меню' %}">
+  <ul class="container-site flex flex-wrap">
+    {% for item in nav_items %}
+      <li>
+        {% if item.children %}
+          <a href="{{ item.url }}"
+             class="hidden min-h-12 items-center border-b-4 px-3 text-sm font-medium text-white no-underline hover:bg-primary-900 hover:text-white nojs:flex 2xl:text-base {% if item.active %}border-accent-400{% else %}border-transparent{% endif %}"
+             {% if item.current %}aria-current="page"{% endif %}>{{ item.title }}</a>
+          <button type="button"
+                  class="flex min-h-12 cursor-pointer items-center gap-1 border-b-4 px-3 text-sm font-medium 2xl:text-base text-white hover:bg-primary-900 aria-expanded:bg-primary-900 {% if item.active %}border-accent-400{% else %}border-transparent{% endif %}"
+                  data-disclosure
+                  data-disclosure-autoclose
+                  aria-expanded="false"
+                  aria-controls="nav-panel-{{ forloop.counter }}">
+            {{ item.title }}
+            {% if item.active %}
+              <span class="sr-only">({% translate "поточний розділ" %})</span>
+            {% endif %}
+            {% include "components/icon.html" with name="chevron-down" class="size-4" %}
+          </button>
+          <div id="nav-panel-{{ forloop.counter }}"
+               class="absolute inset-x-0 top-full z-40 border-b border-gray-300 bg-white shadow-raised nojs:hidden"
+               data-disclosure-panel>
+            <div class="container-site grid gap-8 py-8 lg:grid-cols-3">
+              <div>
+                <p class="font-head text-xl font-medium text-primary-900">{{ item.title }}</p>
+                {% if item.description %}<p class="mt-2 text-gray-700">{{ item.description }}</p>{% endif %}
+                <p class="mt-4">
+                  <a href="{{ item.url }}"
+                     {% if item.current %}aria-current="page"{% endif %}>{% translate "Усе про розділ" %}</a>
+                </p>
+              </div>
+              <ul class="grid content-start gap-x-8 gap-y-3 lg:col-span-2 lg:grid-cols-2">
+                {% for child in item.children %}
+                  <li>
+                    <a href="{{ child.url }}"
+                       class="font-medium"
+                       {% if child.current %}aria-current="page"{% endif %}>{{ child.title }}</a>
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        {% else %}
+          <a href="{{ item.url }}"
+             class="flex min-h-12 items-center border-b-4 px-3 text-sm font-medium 2xl:text-base text-white no-underline hover:bg-primary-900 hover:text-white {% if item.active %}border-accent-400{% else %}border-transparent{% endif %}"
+             {% if item.current %}aria-current="page"{% endif %}>{{ item.title }}</a>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+</nav>

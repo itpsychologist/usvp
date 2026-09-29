@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% comment %}
+  Спільний макет для UI-кіту й wireframes: панель перемикання макетів над шапкою, noindex.
+  Тексти в макетах — заглушки, тому тут без {% translate %}: ці сторінки не публікуються.
+{% endcomment %}
+{% block meta %}
+  <meta name="robots" content="noindex, nofollow">
+{% endblock meta %}
+{% block top_bar %}
+  <nav aria-label="Макети дизайну"
+       class="border-b border-gray-300 bg-gray-100 text-sm">
+    <ul class="container-site flex flex-wrap gap-x-4 gap-y-1 py-2">
+      <li>
+        <span class="font-medium">Макети:</span>
+      </li>
+      <li>
+        <a href="{% url 'styleguide:index' %}"
+           {% if not wireframe_name %}aria-current="page"{% endif %}>UI-кіт</a>
+      </li>
+      {% for key, title in wireframes.items %}
+        <li>
+          <a href="{% url 'styleguide:wireframe' key %}"
+             {% if wireframe_name == key %}aria-current="page" class="font-medium"{% endif %}>{{ title }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  </nav>
+{% endblock top_bar %}

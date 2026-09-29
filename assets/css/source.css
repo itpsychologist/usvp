@@ -1,0 +1,324 @@
+/*
+ * Дизайн-система сайту УСВП. Токени й контраст описано в docs/DESIGN.md.
+ * Збірка: uv run python manage.py tailwind build (або tailwind watch під час розробки).
+ */
+@import "tailwindcss";
+
+@source "../../templates";
+@source "../../static/js";
+@source "../../apps/core/styleguide.py";
+
+/*
+ * Шрифт e-Ukraine (Мінцифри) self-hosted. Покладіть файли woff2 у static/fonts/
+ * і розкоментуйте блок. До того працює системний шрифт із фолбеку --font-sans.
+ *
+ * @font-face {
+ *   font-family: "e-Ukraine";
+ *   src: url("../fonts/e-Ukraine-Regular.woff2") format("woff2");
+ *   font-weight: 400;
+ *   font-display: swap;
+ * }
+ * @font-face {
+ *   font-family: "e-Ukraine";
+ *   src: url("../fonts/e-Ukraine-Medium.woff2") format("woff2");
+ *   font-weight: 500;
+ *   font-display: swap;
+ * }
+ * @font-face {
+ *   font-family: "e-UkraineHead";
+ *   src: url("../fonts/e-UkraineHead-Medium.woff2") format("woff2");
+ *   font-weight: 500;
+ *   font-display: swap;
+ * }
+ */
+
+@custom-variant contrast (&:where([data-contrast="high"], [data-contrast="high"] *));
+/* js / nojs: a11y-init.js додає клас js на <html>, тож без JS сайт лишається повністю працездатним */
+@custom-variant js (&:where(.js *));
+@custom-variant nojs (&:where(html:not(.js) *));
+
+@theme {
+  /* Шрифти */
+  --font-sans: "e-Ukraine", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-head: "e-UkraineHead", var(--font-sans);
+
+  /* Основний колір — глибокий синій. Числа в коментарях — контраст до білого. */
+  --color-primary-900: #0a2350; /* 15.3 */
+  --color-primary-800: #0e3170; /* 12.4 */
+  --color-primary-700: #123f8c; /* 9.9 — основний */
+  --color-primary-600: #1c55b5; /* 7.0 — hover посилань */
+  --color-primary-500: #3a73d1; /* 4.6 — лише великі елементи */
+  --color-primary-100: #e3ecfa;
+  --color-primary-50: #f2f6fd;
+
+  /* Жовтий — тільки фокус і акцент, ніколи як колір тексту на білому */
+  --color-accent-400: #ffd500;
+  --color-accent-100: #fff6cc;
+
+  /* Приглушений оливковий для розділу «Ветеранська політика» */
+  --color-veteran-700: #4a5528; /* 8.0 */
+  --color-veteran-600: #5c6a31; /* 5.9 */
+  --color-veteran-100: #eef1e2;
+
+  /* Нейтральні */
+  --color-ink: #1a1d21; /* 16.9 — основний текст */
+  --color-gray-700: #444b54; /* 8.8 — другорядний текст */
+  --color-gray-600: #5a626c; /* 6.2 — підписи, дати */
+  --color-gray-500: #757d87; /* 4.2 — лише рамки полів (UI ≥ 3:1), не текст */
+  --color-gray-300: #c5cbd3; /* декоративні лінії */
+  --color-gray-200: #dfe3e8;
+  --color-gray-100: #f1f3f5;
+  --color-gray-50: #f8f9fa;
+
+  /* Статуси: текст -700 на фоні -100 має контраст ≥ 5.6 */
+  --color-success-700: #1d6b3a;
+  --color-success-100: #e3f3e8;
+  --color-warning-700: #8a5300;
+  --color-warning-100: #fff3d6;
+  --color-danger-700: #b0231d;
+  --color-danger-100: #fbe5e4;
+
+  /* Радіуси й тіні */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --shadow-card: 0 1px 2px rgb(10 35 80 / 0.06), 0 2px 8px rgb(10 35 80 / 0.06);
+  --shadow-raised: 0 4px 16px rgb(10 35 80 / 0.12);
+
+  /* Ширина рядка ≤ 75 символів */
+  --container-prose: 68ch;
+  --container-site: 80rem;
+
+  /* Типографічна шкала (базовий розмір 18px задано на html) */
+  --text-display: 2.25rem;
+  --text-display--line-height: 1.2;
+}
+
+@layer base {
+  /* 18px базовий розмір; панель доступності збільшує його через data-font */
+  html {
+    font-size: 112.5%;
+    -webkit-text-size-adjust: 100%;
+  }
+  html[data-font="lg"] {
+    font-size: 125%;
+  }
+  html[data-font="xl"] {
+    font-size: 150%;
+  }
+
+  body {
+    @apply bg-white font-sans text-ink antialiased;
+    line-height: 1.5;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-head font-medium text-primary-900 contrast:text-black;
+    line-height: 1.25;
+    text-wrap: balance;
+  }
+  h1 {
+    @apply text-3xl md:text-4xl;
+  }
+  h2 {
+    @apply text-2xl md:text-3xl;
+  }
+  h3 {
+    @apply text-xl md:text-2xl;
+  }
+  h4 {
+    @apply text-lg;
+  }
+
+  a {
+    @apply text-primary-700 underline decoration-1 underline-offset-4 hover:text-primary-600 hover:decoration-2;
+  }
+
+  /* Видимий фокус (WCAG 2.4.7): жовте кільце + темна внутрішня лінія читаються на будь-якому фоні */
+  :focus-visible {
+    outline: 3px solid var(--color-accent-400);
+    outline-offset: 0;
+    box-shadow: 0 0 0 5px var(--color-ink);
+  }
+  main:focus-visible {
+    outline: none;
+    box-shadow: none;
+  }
+
+  /* Режим «підкреслювати всі посилання» з панелі доступності */
+  [data-underline="on"] a {
+    text-decoration-line: underline !important;
+  }
+
+  /* Високий контраст: чорний текст на білому, чорні рамки, без тіней */
+  [data-contrast="high"] {
+    --color-primary-900: #000;
+    --color-primary-800: #000;
+    --color-primary-700: #00137f;
+    --color-primary-600: #00137f;
+    --color-gray-700: #000;
+    --color-gray-600: #000;
+    --color-gray-500: #000;
+    --color-gray-300: #000;
+    --shadow-card: none;
+    --shadow-raised: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  [hidden] {
+    display: none !important;
+  }
+}
+
+/* Базова кнопка як утиліта, щоб її можна було комбінувати через @apply */
+@utility btn {
+  @apply inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-md border-2 px-5 py-2 font-medium no-underline transition-colors;
+}
+
+@layer components {
+  .container-site {
+    @apply mx-auto w-full max-w-site px-4 sm:px-6 lg:px-8;
+  }
+
+  .skip-link {
+    @apply sr-only;
+  }
+  .skip-link:focus {
+    @apply not-sr-only absolute top-2 left-2 z-50 rounded-sm px-4 py-2;
+  }
+
+  /* Кнопки: мінімальна ціль 44×44 px, базовий клас btn — див. @utility нижче */
+  .btn-primary {
+    @apply btn border-primary-700 bg-primary-700 text-white hover:border-primary-800 hover:bg-primary-800 hover:text-white;
+  }
+  .btn-secondary {
+    @apply btn border-primary-700 bg-white text-primary-700 hover:bg-primary-50 hover:text-primary-800;
+  }
+  .btn-link {
+    @apply btn border-transparent px-2 text-primary-700 underline hover:text-primary-600;
+  }
+
+  /* Поля форм: рамка gray-500 має контраст 4.2:1 (UI ≥ 3:1) */
+  .field-label {
+    @apply mb-1 block font-medium text-ink;
+  }
+  .field-hint {
+    @apply mb-2 block text-base text-gray-600;
+  }
+  .field-input {
+    @apply block min-h-11 w-full rounded-md border-2 border-gray-500 bg-white px-3 py-2 text-ink;
+  }
+  .field-input:focus-visible {
+    border-color: var(--color-ink);
+  }
+
+  /* Картка */
+  .card {
+    @apply rounded-lg border border-gray-300 bg-white shadow-card;
+  }
+
+  /* Бейдж / тег */
+  .badge {
+    @apply inline-flex items-center gap-1 rounded-sm bg-gray-100 px-2 py-0.5 text-sm font-medium text-gray-700;
+  }
+
+  /* Текст сторінки з редактора (RichText): стилі для вмісту без класів */
+  .prose-site {
+    @apply max-w-prose;
+  }
+  .prose-site > * + * {
+    @apply mt-4;
+  }
+  .prose-site > h2 {
+    @apply mt-10 mb-2;
+  }
+  .prose-site > h3 {
+    @apply mt-8 mb-2;
+  }
+  .prose-site > ul {
+    @apply list-disc space-y-2 pl-6;
+  }
+  .prose-site > ol {
+    @apply list-decimal space-y-2 pl-6;
+  }
+  .prose-site > blockquote {
+    @apply border-l-4 border-primary-500 pl-4 text-gray-700;
+  }
+
+  /* Таблиці даних: горизонтальна прокрутка в обгортці з tabindex */
+  .table-wrap {
+    @apply overflow-x-auto rounded-lg border border-gray-300;
+  }
+  .table-data {
+    @apply w-full border-collapse text-left text-base;
+  }
+  .table-data caption {
+    @apply px-4 py-3 text-left font-medium;
+  }
+  .table-data th {
+    @apply border-b-2 border-gray-300 bg-gray-100 px-4 py-3 align-bottom font-medium;
+  }
+  .table-data td {
+    @apply border-b border-gray-200 px-4 py-3 align-top;
+  }
+}
+
+/*
+ * Фокус посилань і кнопок — поза @layer і з !important, щоб жодна утиліта кольору (text-white, bg-*)
+ * не зробила текст у фокусі нечитабельним: завжди темний текст на жовтому (контраст 11.9:1).
+ */
+a:focus-visible {
+  background-color: var(--color-accent-400) !important;
+  color: var(--color-ink) !important;
+  text-decoration: none !important;
+  outline: none;
+  box-shadow:
+    0 -2px var(--color-accent-400),
+    0 4px var(--color-ink);
+}
+:is(.btn, .btn-primary, .btn-secondary, .btn-link):focus-visible {
+  background-color: var(--color-accent-400) !important;
+  color: var(--color-ink) !important;
+  border-color: var(--color-ink) !important;
+  outline: none;
+  box-shadow: 0 0 0 3px var(--color-ink);
+}
+
+/*
+ * Розкривні панелі (static/js/site.js). Без JS кнопки-перемикачі сховані, а панелі видно,
+ * тож меню й підрозділи доступні й так. З JS панель видно лише з атрибутом data-open.
+ */
+html:not(.js) [data-disclosure],
+html:not(.js) [data-requires-js] {
+  display: none !important;
+}
+html.js [data-disclosure-panel]:not([data-open]) {
+  display: none !important;
+}
+
+/* Windows High Contrast: стан перемикачів і фокус не повинні залежати лише від кольору фону */
+@media (forced-colors: active) {
+  [aria-pressed="true"],
+  [aria-expanded="true"] {
+    outline: 3px solid CanvasText;
+    outline-offset: -5px;
+  }
+  :focus-visible,
+  a:focus-visible,
+  :is(.btn, .btn-primary, .btn-secondary, .btn-link):focus-visible {
+    outline: 3px solid Highlight !important;
+    outline-offset: 2px;
+  }
+}

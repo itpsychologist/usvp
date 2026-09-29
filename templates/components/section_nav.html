@@ -1,0 +1,18 @@
+{% load i18n %}
+{# Бокова навігація розділу. Параметри: section — {title, url, children: [{title, url, current}]} #}
+<nav aria-labelledby="section-nav-title"
+     class="rounded-lg border border-gray-300">
+  <p id="section-nav-title"
+     class="border-b border-gray-300 px-4 py-3 font-head font-medium">
+    <a href="{{ section.url }}" class="text-primary-900">{{ section.title }}</a>
+  </p>
+  <ul class="py-2">
+    {% for child in section.children %}
+      <li>
+        <a href="{{ child.url }}"
+           class="block border-l-4 px-4 py-2 {% if child.current %}border-primary-700 bg-primary-50 font-medium text-primary-900 no-underline{% else %}border-transparent no-underline hover:underline{% endif %}"
+           {% if child.current %}aria-current="page"{% endif %}>{{ child.title }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+</nav>

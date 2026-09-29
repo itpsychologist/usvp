@@ -1,0 +1,13 @@
+{% load i18n %}
+{# «На цій сторінці» для довгих текстів. Параметри: toc — [{id, title}], toc_id — унікальний id, якщо блоків кілька #}
+<nav aria-labelledby="{{ toc_id|default:'page-toc' }}-title"
+     class="rounded-lg bg-gray-100 p-5">
+  <p id="{{ toc_id|default:'page-toc' }}-title" class="font-medium">{% translate "На цій сторінці" %}</p>
+  <ul class="mt-3 space-y-2">
+    {% for entry in toc %}
+      <li>
+        <a href="#{{ entry.id }}">{{ entry.title }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+</nav>

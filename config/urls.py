@@ -12,6 +12,8 @@ urlpatterns = [
     path(settings.WAGTAIL_ADMIN_PATH, include(wagtailadmin_urls)),
     path("documents/", include(wagtaildocs_urls)),
     path("sitemap.xml", sitemap),
+    # UI-кіт і wireframes; view повертає 404, якщо STYLEGUIDE_ENABLED = False
+    path("styleguide/", include("apps.core.urls")),
 ]
 
 if settings.DEBUG:

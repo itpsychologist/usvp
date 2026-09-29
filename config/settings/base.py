@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     "wagtail",
     "modelcluster",
     "taggit",
+    "django_tailwind_cli",
     # Django
     "django.contrib.admin",
     "django.contrib.auth",
@@ -115,6 +116,14 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 MEDIA_URL = "/media/"
 MEDIA_ROOT = env.path("MEDIA_ROOT", default=BASE_DIR / "media")
+
+# Tailwind CSS 4 (standalone-бінарник, Node не потрібен): manage.py tailwind build / watch
+TAILWIND_CLI_SRC_CSS = "assets/css/source.css"
+TAILWIND_CLI_DIST_CSS = "css/tailwind.css"
+TAILWIND_CLI_VERSION = env("TAILWIND_CLI_VERSION", default="4.3.3")
+
+# UI-кіт і wireframes на /styleguide/ — лише для розробки й погодження дизайну
+STYLEGUIDE_ENABLED = env.bool("STYLEGUIDE_ENABLED", default=False)
 
 STORAGES = {
     "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},

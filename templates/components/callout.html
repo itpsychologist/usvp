@@ -1,0 +1,26 @@
+{% load i18n %}
+{% comment %}
+  Виділений блок. Параметри: variant — info | success | warning | danger, title, text (або html через body).
+{% endcomment %}
+<div class="flex gap-3 rounded-md border-l-4 p-4 {% if variant == 'warning' %}border-warning-700 bg-warning-100{% elif variant == 'success' %}border-success-700 bg-success-100{% elif variant == 'danger' %}border-danger-700 bg-danger-100{% else %}border-primary-700 bg-primary-50{% endif %}">
+  <span class="{% if variant == 'warning' %}text-warning-700{% elif variant == 'success' %}text-success-700{% elif variant == 'danger' %}text-danger-700{% else %}text-primary-700{% endif %}">
+    {% if variant == "warning" or variant == "danger" %}
+      {% include "components/icon.html" with name="alert-triangle" class="mt-1 size-6" %}
+    {% elif variant == "success" %}
+      {% include "components/icon.html" with name="check-circle" class="mt-1 size-6" %}
+    {% else %}
+      {% include "components/icon.html" with name="info" class="mt-1 size-6" %}
+    {% endif %}
+  </span>
+  <div>
+    {% if variant == "warning" %}
+      <span class="sr-only">{% translate "Увага:" %}</span>
+    {% elif variant == "danger" %}
+      <span class="sr-only">{% translate "Важливо:" %}</span>
+    {% elif variant == "success" %}
+      <span class="sr-only">{% translate "Успіх:" %}</span>
+    {% endif %}
+    {% if title %}<p class="font-medium">{{ title }}</p>{% endif %}
+    {% if text %}<p class="{% if title %}mt-1{% endif %}">{{ text }}</p>{% endif %}
+  </div>
+</div>

@@ -1,0 +1,61 @@
+{% load i18n %}
+{% comment %}
+  Шапка сайту. Контекст (усе необов'язкове, у фазі 2 надходитиме з меню й SiteSettings):
+  nav_items — [{title, url, active, current, description, children: [{title, url, current}]}]
+  lang_links — [{code, label, name, url, current}]
+  search_url, search_query — пошук у шапці
+{% endcomment %}
+{% get_current_language as LANGUAGE_CODE %}
+<header class="border-b border-gray-300 bg-white">
+  <div class="bg-primary-900 text-white">
+    <div class="container-site flex min-h-11 flex-wrap items-center justify-between gap-x-4 gap-y-1 py-1 text-sm">
+      <p>{% translate "Офіційний вебсайт органу місцевого самоврядування" %}</p>
+      <div class="flex items-center gap-2">
+        <button type="button"
+                class="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-sm px-2 font-medium text-white hover:underline"
+                data-disclosure
+                data-disclosure-autoclose
+                aria-expanded="false"
+                aria-controls="a11y-panel">
+          {% include "components/icon.html" with name="eye" %}
+          {% translate "Доступність" %}
+        </button>
+        {% if lang_links %}
+          {% include "components/lang_switcher.html" %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% include "components/a11y_panel.html" %}
+  <div class="container-site flex flex-wrap items-center justify-between gap-4 py-4">
+    <a href="{% if LANGUAGE_CODE == 'en' %}/en/{% else %}/{% endif %}"
+       class="flex min-w-0 items-center gap-3 text-primary-900 no-underline hover:text-primary-800">
+      {% include "components/emblem.html" %}
+      <span class="font-head text-base leading-tight font-medium sm:text-lg">
+        {% translate "Управління соціальної та ветеранської політики" %}
+        <span class="block font-sans text-sm font-normal text-gray-700 sm:text-base">{% translate "Лубенської міської ради" %}</span>
+      </span>
+    </a>
+    {% if search_url %}
+      <div class="hidden w-full max-w-sm lg:block">
+        {% include "components/search_form.html" with form_id="header-search" compact=True %}
+      </div>
+    {% endif %}
+    {% if nav_items or search_url %}
+      <button type="button"
+              class="btn-secondary px-3 lg:hidden"
+              data-disclosure
+              aria-expanded="false"
+              aria-controls="mobile-menu">
+        {% include "components/icon.html" with name="menu" %}
+        {% translate "Меню" %}
+      </button>
+    {% endif %}
+  </div>
+  {% if nav_items %}
+    {% include "components/main_nav.html" %}
+  {% endif %}
+  {% if nav_items or search_url %}
+    {% include "components/mobile_nav.html" %}
+  {% endif %}
+</header>

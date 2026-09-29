@@ -1,0 +1,26 @@
+{% load i18n %}
+{% comment %}
+  Картка новини. Параметри: item — {title, url, date, lead, tag, image_alt}; heading_level — 2 або 3 (типово 3).
+  Зображення у wireframe — сіра заглушка; у фазі 3 — Wagtail rendition зі srcset і alt.
+{% endcomment %}
+<article class="card relative flex h-full flex-col overflow-hidden hover:border-primary-700">
+  <div class="aspect-[16/9] bg-gray-200"
+       role="img"
+       aria-label="{{ item.image_alt|default:_("Ілюстрація до новини") }}"></div>
+  <div class="flex flex-1 flex-col p-5">
+    <p class="flex flex-wrap items-center gap-2 text-sm text-gray-600">
+      <time datetime="{{ item.date|date:'Y-m-d' }}">{{ item.date|date:"j E Y" }}</time>
+      {% if item.tag %}<span class="badge">{{ item.tag }}</span>{% endif %}
+    </p>
+    {% if heading_level == 2 %}
+      <h2 class="mt-2 text-xl md:text-xl">
+        <a href="{{ item.url }}" class="after:absolute after:inset-0">{{ item.title }}</a>
+      </h2>
+    {% else %}
+      <h3 class="mt-2 text-xl md:text-xl">
+        <a href="{{ item.url }}" class="after:absolute after:inset-0">{{ item.title }}</a>
+      </h3>
+    {% endif %}
+    {% if item.lead %}<p class="mt-2 text-gray-700">{{ item.lead }}</p>{% endif %}
+  </div>
+</article>

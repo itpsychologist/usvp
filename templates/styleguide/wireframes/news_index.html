@@ -1,0 +1,36 @@
+{% extends "styleguide/base.html" %}
+{% block title %}
+  Новини (макет)
+{% endblock title %}
+{% block content %}
+  <div class="container-site">
+    {% include "components/breadcrumbs.html" %}
+    <h1 class="mt-2">Новини</h1>
+    <form method="get"
+          class="mt-8 flex flex-wrap items-end gap-4 rounded-lg bg-gray-100 p-5"
+          aria-label="Фільтр новин">
+      <div>
+        <label for="filter-year" class="field-label">Рік</label>
+        <select id="filter-year" name="year" class="field-input w-40">
+          <option value="">Усі роки</option>
+          {% for year in years %}<option>{{ year }}</option>{% endfor %}
+        </select>
+      </div>
+      <div>
+        <label for="filter-topic" class="field-label">Тема</label>
+        <select id="filter-topic" name="topic" class="field-input w-64">
+          <option value="">Усі теми</option>
+          {% for topic in topics %}<option>{{ topic }}</option>{% endfor %}
+        </select>
+      </div>
+      <button type="submit" class="btn-primary">Показати</button>
+    </form>
+    <p class="mt-6 text-gray-700" role="status">Знайдено новин: 64</p>
+    <ul class="mt-6 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {% for item in news %}
+        <li>{% include "components/news_card.html" with heading_level=2 %}</li>
+      {% endfor %}
+    </ul>
+    {% include "components/pagination.html" %}
+  </div>
+{% endblock content %}

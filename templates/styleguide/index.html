@@ -1,0 +1,145 @@
+{% extends "styleguide/base.html" %}
+{% block title %}
+  UI-кіт
+{% endblock title %}
+{% block content %}
+  <div class="container-site py-10">
+    <h1>UI-кіт сайту УСВП</h1>
+    <p class="mt-4 max-w-prose text-lg text-gray-700">
+      Дизайн-токени та компоненти. Опис рішень і контрастів — у <code>docs/DESIGN.md</code>.
+      Спробуйте панель «Доступність» у шапці: розмір шрифту, високий контраст, підкреслення посилань.
+    </p>
+    <section class="mt-12" aria-labelledby="sg-colors">
+      <h2 id="sg-colors">Кольори</h2>
+      <p class="mt-2 max-w-prose text-gray-700">Контраст — відносно білого фону. Жовтий використовується лише для фокуса й акцентів.</p>
+      <ul class="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+        {% for name, hex, ratio, swatch in colors %}
+          <li class="card overflow-hidden">
+            <div class="h-16 border-b border-gray-300 {{ swatch }}"></div>
+            <div class="p-3 text-sm">
+              <p class="font-medium">{{ name }}</p>
+              <p class="text-gray-600">{{ hex }} · {{ ratio }}</p>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    </section>
+    <section class="mt-12" aria-labelledby="sg-type">
+      <h2 id="sg-type">Типографіка</h2>
+      <div class="mt-6 space-y-4">
+        <p class="font-head text-display font-medium text-primary-900">Display — головний заголовок</p>
+        <p class="font-head text-4xl font-medium text-primary-900">H1 — заголовок сторінки</p>
+        <p class="font-head text-3xl font-medium text-primary-900">H2 — розділ сторінки</p>
+        <p class="font-head text-2xl font-medium text-primary-900">H3 — підрозділ</p>
+        <p class="text-lg">Лід — 20 px, вступний абзац під заголовком.</p>
+        <p class="max-w-prose">
+          Основний текст — 18 px, міжрядковий інтервал 1,5, ширина рядка до 68 символів. <a href="#">Посилання в тексті</a> завжди підкреслені.
+        </p>
+        <p class="text-sm text-gray-600">Дрібний текст — 16 px: дати, підписи, метадані.</p>
+      </div>
+    </section>
+    <section class="mt-12" aria-labelledby="sg-buttons">
+      <h2 id="sg-buttons">Кнопки</h2>
+      <div class="mt-6 flex flex-wrap items-center gap-4">
+        <button type="button" class="btn-primary">Основна дія</button>
+        <button type="button" class="btn-secondary">Другорядна дія</button>
+        <button type="button" class="btn-link">Кнопка-посилання</button>
+        <a href="#" class="btn-primary">
+          {% include "components/icon.html" with name="download" %}
+          З іконкою
+        </a>
+      </div>
+    </section>
+    <section class="mt-12 max-w-xl" aria-labelledby="sg-forms">
+      <h2 id="sg-forms">Поля форм</h2>
+      <div class="mt-6 space-y-6">
+        <div>
+          <label for="sg-input" class="field-label">Текстове поле</label>
+          <span id="sg-input-hint" class="field-hint">Підказка під підписом</span>
+          <input id="sg-input"
+                 type="text"
+                 class="field-input"
+                 aria-describedby="sg-input-hint">
+        </div>
+        <div>
+          <label for="sg-select" class="field-label">Список</label>
+          <select id="sg-select" class="field-input">
+            <option>Варіант 1</option>
+            <option>Варіант 2</option>
+          </select>
+        </div>
+        {% include "components/search_form.html" with form_id="sg-search" search_url="#" %}
+      </div>
+    </section>
+    <section class="mt-12" aria-labelledby="sg-nav">
+      <h2 id="sg-nav">Навігація</h2>
+      <h3 class="mt-6">Хлібні крихти</h3>
+      {% include "components/breadcrumbs.html" %}
+      <div class="mt-6 grid gap-8 md:grid-cols-2">
+        <div>
+          <h3 class="mb-4">Бокова навігація розділу</h3>
+          {% include "components/section_nav.html" %}
+        </div>
+        <div>
+          <h3 class="mb-4">На цій сторінці</h3>
+          {% include "components/page_toc.html" %}
+        </div>
+      </div>
+      <h3 class="mt-8">Пагінація</h3>
+      {% include "components/pagination.html" %}
+    </section>
+    <section class="mt-12" aria-labelledby="sg-cards">
+      <h2 id="sg-cards">Картки</h2>
+      <ul class="mt-6 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <li>{% include "components/task_tile.html" %}</li>
+        <li>{% include "components/task_tile.html" with tile=tile2 %}</li>
+        <li>{% include "components/card_link.html" %}</li>
+        <li>{% include "components/news_card.html" with item=news_item %}</li>
+        {% for item in announcements %}
+          <li>{% include "components/announcement_card.html" %}</li>
+        {% endfor %}
+      </ul>
+      <div class="mt-6 grid gap-6 lg:grid-cols-2">
+        {% include "components/person_card.html" %}
+        {% include "components/contact_card.html" %}
+      </div>
+    </section>
+    <section class="mt-12 max-w-prose" aria-labelledby="sg-callouts">
+      <h2 id="sg-callouts">Виділені блоки</h2>
+      <div class="mt-6 space-y-4">
+        {% include "components/callout.html" with variant="info" title="Інформація" text="Нейтральна підказка або пояснення." %}
+        {% include "components/callout.html" with variant="success" title="Успіх" text="Підтвердження або позитивний статус." %}
+        {% include "components/callout.html" with variant="warning" title="Увага" text="Важлива умова, яку легко пропустити." %}
+        {% include "components/callout.html" with variant="danger" title="Важливо" text="Критичне попередження." %}
+      </div>
+      <h3 class="mt-8">Термінове оголошення (банер над шапкою)</h3>
+    </section>
+    <div class="mt-4">{% include "components/alert_banner.html" %}</div>
+    <section class="mt-12 max-w-prose" aria-labelledby="sg-accordion">
+      <h2 id="sg-accordion">Акордеон / FAQ</h2>
+      <div class="mt-6">{% include "components/accordion.html" with items=faq %}</div>
+    </section>
+    <section class="mt-12 max-w-prose" aria-labelledby="sg-docs">
+      <h2 id="sg-docs">Документи</h2>
+      <div class="mt-6">{% include "components/document_list.html" %}</div>
+    </section>
+    <section class="mt-12 max-w-prose" aria-labelledby="sg-table">
+      <h2 id="sg-table">Таблиця</h2>
+      <div class="mt-6">{% include "components/schedule.html" with caption="Графік роботи" %}</div>
+    </section>
+    <section class="mt-12" aria-labelledby="sg-icons">
+      <h2 id="sg-icons">Іконки</h2>
+      <p class="mt-2 max-w-prose text-gray-700">
+        Lucide (ліцензія ISC), inline SVG. Іконки декоративні (<code>aria-hidden</code>): зміст передає текст поруч.
+      </p>
+      <ul class="mt-6 grid grid-cols-3 gap-4 sm:grid-cols-5 lg:grid-cols-8">
+        {% for icon in icons %}
+          <li class="flex flex-col items-center gap-2 rounded-md border border-gray-300 p-3 text-center text-sm">
+            <span class="text-primary-700">{% include "components/icon.html" with name=icon class="size-6" %}</span>
+            {{ icon }}
+          </li>
+        {% endfor %}
+      </ul>
+    </section>
+  </div>
+{% endblock content %}

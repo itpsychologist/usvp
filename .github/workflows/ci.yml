@@ -36,7 +36,13 @@ jobs:
         run: |
           uv run python manage.py check
           uv run python manage.py makemigrations --check --dry-run
-          DJANGO_SECRET_KEY=ci DJANGO_ALLOWED_HOSTS=example.gov.ua \
+          DJANGO_SECRET_KEY="$(uv run python -c 'import secrets; print(secrets.token_urlsafe(50))')" \
+          DJANGO_ALLOWED_HOSTS=example.gov.ua \
             uv run python manage.py check --deploy --settings=config.settings.prod --fail-level WARNING
+      - name: Build CSS and collect static (prod storage)
+        # Manifest-сховище в prod падає на відсутньому css/tailwind.css, тож збираємо його до collectstatic
+        run: |
+          uv run python manage.py tailwind build
+          DJANGO_SECRET_KEY="$(uv run python -c 'import secrets; print(secrets.token_urlsafe(50))')"           DJANGO_ALLOWED_HOSTS=example.gov.ua             uv run python manage.py collectstatic --noinput --settings=config.settings.prod
       - name: Tests
         run: uv run pytest

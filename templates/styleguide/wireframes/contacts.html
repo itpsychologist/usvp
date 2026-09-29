@@ -1,0 +1,90 @@
+{% extends "styleguide/base.html" %}
+{% block title %}
+  Контакти (макет)
+{% endblock title %}
+{% block content %}
+  <div class="container-site">
+    {% include "components/breadcrumbs.html" %}
+    <h1 class="mt-2">Контакти</h1>
+    <div class="mt-8 grid gap-8 lg:grid-cols-2">
+      <section class="min-w-0 rounded-lg bg-primary-50 p-6"
+               aria-labelledby="main-contacts">
+        <h2 id="main-contacts" class="text-2xl md:text-2xl">Управління</h2>
+        <address class="mt-4 space-y-3 not-italic">
+          <p class="flex gap-3">
+            {% include "components/icon.html" with name="map-pin" class="mt-1 size-5 text-primary-700" %}
+            {{ site_info.address }}
+          </p>
+          {% for phone in site_info.phones %}
+            <p class="flex gap-3">
+              {% include "components/icon.html" with name="phone" class="mt-1 size-5 text-primary-700" %}
+              <span>
+                <span class="block text-sm text-gray-600">{{ phone.label }}</span>
+                <a href="tel:{{ phone.href }}">{{ phone.number }}</a>
+              </span>
+            </p>
+          {% endfor %}
+          <p class="flex gap-3">
+            {% include "components/icon.html" with name="mail" class="mt-1 size-5 text-primary-700" %}
+            <a href="mailto:{{ site_info.email }}" class="wrap-anywhere">{{ site_info.email }}</a>
+          </p>
+        </address>
+        <div class="mt-6 flex flex-wrap gap-3">
+          <a href="{{ site_info.map_url }}"
+             class="btn-primary"
+             rel="noopener noreferrer"
+             target="_blank">
+            {% include "components/icon.html" with name="map-pin" %}
+            Відкрити на Google Maps
+            <span class="sr-only">(відкривається в новій вкладці)</span>
+          </a>
+          <a href="{{ site_info.facebook_url }}"
+             class="btn-secondary"
+             rel="noopener noreferrer"
+             target="_blank">
+            Сторінка у Facebook
+            {% include "components/icon.html" with name="external-link" class="size-4" %}
+            <span class="sr-only">(відкривається в новій вкладці)</span>
+          </a>
+        </div>
+      </section>
+      <section class="min-w-0" aria-labelledby="schedule-title">
+        <h2 id="schedule-title" class="text-2xl md:text-2xl">Графік роботи</h2>
+        <div class="mt-4">{% include "components/schedule.html" with schedule=site_info.schedule %}</div>
+      </section>
+    </div>
+    <section class="mt-12" aria-labelledby="appeal-title">
+      <h2 id="appeal-title">Як звернутися</h2>
+      <div class="mt-6 grid gap-4 md:grid-cols-3">
+        <div class="card p-5">
+          <h3 class="text-xl md:text-xl">Особисто</h3>
+          <p class="mt-2 text-gray-700">Текст-заглушка: адреса, дні та години особистого прийому.</p>
+        </div>
+        <div class="card p-5">
+          <h3 class="text-xl md:text-xl">Письмово</h3>
+          <p class="mt-2 text-gray-700">Текст-заглушка: поштова адреса та вимоги до письмового звернення.</p>
+        </div>
+        <div class="card p-5">
+          <h3 class="text-xl md:text-xl">Електронною поштою</h3>
+          <p class="mt-2 text-gray-700">Текст-заглушка: адреса e-mail і вимоги до електронного звернення.</p>
+        </div>
+      </div>
+    </section>
+    <section class="mt-12" aria-labelledby="leaders-title">
+      <h2 id="leaders-title">Особистий прийом керівництва</h2>
+      <ul class="mt-6 grid gap-4 lg:grid-cols-2">
+        {% for person in leaders %}
+          <li>{% include "components/person_card.html" %}</li>
+        {% endfor %}
+      </ul>
+    </section>
+    <section class="mt-12" aria-labelledby="departments-title">
+      <h2 id="departments-title">Відділи</h2>
+      <ul class="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {% for contact in departments %}
+          <li>{% include "components/contact_card.html" %}</li>
+        {% endfor %}
+      </ul>
+    </section>
+  </div>
+{% endblock content %}

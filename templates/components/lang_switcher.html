@@ -1,0 +1,21 @@
+{% load i18n %}
+<nav aria-label="{% translate 'Вибір мови' %}">
+  <ul class="flex items-center gap-1">
+    {% for lang in lang_links %}
+      <li>
+        {% if lang.current %}
+          <span class="inline-flex min-h-11 items-center rounded-sm bg-white/15 px-3 font-medium">
+            {{ lang.label }}<span class="sr-only">, {{ lang.name }} — {% translate "поточна мова" %}</span>
+          </span>
+        {% else %}
+          <a href="{{ lang.url }}"
+             lang="{{ lang.code }}"
+             hreflang="{{ lang.code }}"
+             class="inline-flex min-h-11 items-center rounded-sm px-3 font-medium text-white no-underline hover:text-white hover:underline">
+            {{ lang.label }}<span class="sr-only">, {{ lang.name }}</span>
+          </a>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+</nav>

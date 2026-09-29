@@ -1,0 +1,18 @@
+{% load i18n %}
+{# Хлібні крихти. breadcrumbs — [{title, url}], останній елемент — поточна сторінка (без посилання) #}
+<nav aria-label="{% translate 'Хлібні крихти' %}" class="py-4 text-base">
+  <ol class="flex flex-wrap items-center gap-x-2 gap-y-1">
+    {% for crumb in breadcrumbs %}
+      <li class="flex items-center gap-2">
+        {% if not forloop.first %}
+          <span class="text-gray-600">{% include "components/icon.html" with name="chevron-right" class="size-4" %}</span>
+        {% endif %}
+        {% if forloop.last %}
+          <span aria-current="page" class="text-gray-700">{{ crumb.title }}</span>
+        {% else %}
+          <a href="{{ crumb.url }}">{{ crumb.title }}</a>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ol>
+</nav>

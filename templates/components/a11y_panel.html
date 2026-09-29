@@ -1,0 +1,42 @@
+{% load i18n %}
+{# Панель доступності: налаштування зберігаються в localStorage (static/js/site.js). Без JS не показується #}
+<div id="a11y-panel"
+     class="border-b border-gray-300 bg-gray-50"
+     role="region"
+     aria-label="{% translate 'Налаштування доступності' %}"
+     data-disclosure-panel
+     data-requires-js>
+  <div class="container-site flex flex-wrap items-start gap-x-10 gap-y-4 py-4">
+    {% translate "Звичайний" as normal %}
+    <fieldset>
+      <legend class="mb-2 font-medium">{% translate "Розмір шрифту" %}</legend>
+      <div class="flex flex-wrap gap-2">
+        {% include "components/a11y_toggle.html" with key="font" value="" label=normal %}
+        {% translate "Більший" as label %}
+        {% include "components/a11y_toggle.html" with key="font" value="lg" label=label %}
+        {% translate "Найбільший" as label %}
+        {% include "components/a11y_toggle.html" with key="font" value="xl" label=label %}
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend class="mb-2 font-medium">{% translate "Контраст" %}</legend>
+      <div class="flex flex-wrap gap-2">
+        {% include "components/a11y_toggle.html" with key="contrast" value="" label=normal %}
+        {% translate "Високий" as label %}
+        {% include "components/a11y_toggle.html" with key="contrast" value="high" label=label %}
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend class="mb-2 font-medium">{% translate "Підкреслення посилань" %}</legend>
+      <div class="flex flex-wrap gap-2">
+        {% translate "Як на сайті" as label %}
+        {% include "components/a11y_toggle.html" with key="underline" value="" label=label %}
+        {% translate "Завжди" as label %}
+        {% include "components/a11y_toggle.html" with key="underline" value="on" label=label %}
+      </div>
+    </fieldset>
+    <div class="self-end">
+      <button type="button" class="btn-link" data-a11y="reset">{% translate "Скинути налаштування" %}</button>
+    </div>
+  </div>
+</div>

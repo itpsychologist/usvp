@@ -16,7 +16,7 @@ Wagtail — CMS, побудована на Django: це звичайний Djang
 | i18n | `wagtail-localize` (переклад UA→EN в адмінці), `django.middleware.locale`, `i18n_patterns(prefix_default_language=False)`: UA на `/`, EN на `/en/` |
 | БД | **PostgreSQL 16+** |
 | Пошук | Wagtail search, бекенд `database` на PostgreSQL FTS (конфіг `simple` + unaccent для UA; окремий індекс для EN) |
-| Фронтенд | Django templates, **Tailwind CSS 4** через `django-tailwind-cli` (standalone-бінарник, Node не потрібен), **Alpine.js** для меню, акордеонів і перемикачів. Без SPA |
+| Фронтенд | Django templates, **Tailwind CSS 4** через `django-tailwind-cli` (standalone-бінарник, Node не потрібен), невеликий vanilla JS без залежностей (`static/js/site.js`, сумісний із суворою CSP) для меню й панелі доступності, акордеони — нативні `<details>`. Без SPA. Дизайн-система — [DESIGN.md](DESIGN.md) |
 | Шрифт | **e-Ukraine** / e-UkraineHead (безкоштовний шрифт Мінцифри, кирилиця), self-hosted |
 | Медіа | Wagtail Images: рендишини WebP/AVIF, `srcset`, обов'язковий alt-текст. Документи: PDF/DOCX з обмеженням розміру й типу |
 | Налаштування | `django-environ` (`.env`), розбиття `settings/base.py`, `dev.py`, `prod.py` |
@@ -45,7 +45,8 @@ usvp/
 │  ├─ contacts/            # ContactPage
 │  └─ search/              # SearchView
 ├─ templates/              # base.html, components/, pages/
-├─ static/src/             # tailwind input.css, js/
+├─ assets/css/             # source.css — вхід Tailwind (поза STATICFILES_DIRS)
+├─ static/                 # js/, fonts/, css/tailwind.css (збирається, не в git)
 ├─ locale/                 # uk, en (.po) для інтерфейсних рядків
 ├─ docs/                   # IMPLEMENTATION_PLAN.md, STACK.md, CONTENT_GUIDE.md
 ├─ tests/  e2e/
@@ -96,6 +97,6 @@ usvp/
 - Хук `PostToolUse` для `*.py` запускає `ruff format`, для `*.html` запускає `djlint --reformat`.
 
 ### Проєктні субагенти (`.claude/agents/`)
-- Реалізатори: `wagtail-developer` (бекенд), `frontend-developer` (шаблони, Tailwind, Alpine.js), `content-editor` (тексти й переклад інтерфейсу).
+- Реалізатори: `wagtail-developer` (бекенд), `frontend-developer` (шаблони, Tailwind, JS), `content-editor` (тексти й переклад інтерфейсу).
 - Рецензенти, лише читають і звітують: `django-reviewer` (коректність і безпека), `a11y-auditor` (WCAG 2.1 AA), `compliance-reviewer` (вимоги законодавства).
 - Порядок використання описано в `CLAUDE.md`. Плагіни `feature-dev` і `pr-review-toolkit` поки не встановлені; їх можна додати через `/plugin` як загальні доповнення.

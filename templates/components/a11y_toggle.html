@@ -1,0 +1,12 @@
+{# Кнопка-перемикач панелі доступності; aria-pressed синхронізує static/js/site.js #}
+<button type="button"
+        class="group btn-secondary aria-pressed:bg-primary-700 aria-pressed:text-white aria-pressed:hover:bg-primary-800"
+        data-a11y="{{ key }}"
+        data-value="{{ value }}"
+        aria-pressed="{% if value %}false{% else %}true{% endif %}">
+  {# Галочка дублює стан не лише кольором (WCAG 1.4.1, режим forced-colors) #}
+  <span class="hidden group-aria-pressed:inline">
+    {% include "components/icon.html" with name="check" class="size-4" %}
+  </span>
+  {{ label }}
+</button>

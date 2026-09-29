@@ -1,0 +1,43 @@
+{% load i18n %}
+{% comment %}
+  Пагінація. Параметри: pagination — {pages: [{number, url, current, gap}], prev_url, next_url}.
+  У фазі 3 заповнюється з Django Paginator.
+{% endcomment %}
+<nav aria-label="{% translate 'Сторінки' %}" class="mt-10">
+  <ul class="flex flex-wrap items-center gap-2">
+    {% if pagination.prev_url %}
+      <li>
+        <a href="{{ pagination.prev_url }}" class="btn-secondary px-3">
+          {% include "components/icon.html" with name="chevron-left" %}
+          {% translate "Попередня" %}
+        </a>
+      </li>
+    {% endif %}
+    {% for p in pagination.pages %}
+      <li>
+        {% if p.gap %}
+          <span class="px-2 text-gray-600" aria-hidden="true">…</span>
+        {% elif p.current %}
+          <a href="{{ p.url }}"
+             class="btn border-primary-700 bg-primary-700 px-3 text-white hover:text-white"
+             aria-current="page">
+            <span class="sr-only">{% translate "Сторінка" %}</span> {{ p.number }}
+          </a>
+        {% else %}
+          <a href="{{ p.url }}"
+             class="btn border-transparent px-3 hover:border-primary-700">
+            <span class="sr-only">{% translate "Сторінка" %}</span> {{ p.number }}
+          </a>
+        {% endif %}
+      </li>
+    {% endfor %}
+    {% if pagination.next_url %}
+      <li>
+        <a href="{{ pagination.next_url }}" class="btn-secondary px-3">
+          {% translate "Наступна" %}
+          {% include "components/icon.html" with name="chevron-right" %}
+        </a>
+      </li>
+    {% endif %}
+  </ul>
+</nav>

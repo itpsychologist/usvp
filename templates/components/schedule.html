@@ -1,0 +1,19 @@
+{% comment %}
+  Графік роботи. Параметри: schedule — [{days, hours, note}], caption.
+{% endcomment %}
+<div class="table-wrap">
+  <table class="table-data">
+    {% if caption %}<caption>{{ caption }}</caption>{% endif %}
+    <tbody>
+      {% for row in schedule %}
+        <tr>
+          <th scope="row" class="w-1/2 border-b border-gray-200 bg-white">{{ row.days }}</th>
+          <td>
+            {{ row.hours }}
+            {% if row.note %}<span class="block text-sm text-gray-600">{{ row.note }}</span>{% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>

@@ -11,7 +11,8 @@ uv sync                                   # залежності
 docker compose up -d db                   # PostgreSQL (без DATABASE_URL у .env буде SQLite)
 uv run python manage.py migrate
 uv run python manage.py createsuperuser
-uv run python manage.py runserver         # сайт: /  EN: /en/  адмінка: /cms-admin/
+uv run python manage.py tailwind build     # зібрати CSS (tailwind watch — перезбирати під час розробки)
+uv run python manage.py runserver         # сайт: /  EN: /en/  адмінка: /cms-admin/  UI-кіт: /styleguide/
 uv run pytest                             # тести (settings: config.settings.test)
 uv run ruff check . && uv run ruff format .
 uv run djlint templates --reformat --lint
@@ -22,7 +23,8 @@ uv run python manage.py makemigrations --check --dry-run
 - `config/settings/{base,dev,test,prod}.py`: налаштування через `.env` (`django-environ`), зразок у `.env.example`.
 - `apps/<app>/`: застосунки (`core`, `home`, далі `pages`, `organization`, `news`, `publicinfo`, `contacts`, `search`). Нові застосунки створюй саме тут, `name = "apps.<app>"`.
 - `templates/`: усі шаблони (`base.html`, `<app>/<model>.html`, `components/`).
-- `static/src/`: вихідні CSS/JS.
+- `assets/css/source.css`: вхід Tailwind 4 і дизайн-токени (`@theme`), опис у `docs/DESIGN.md`. Зібраний `static/css/tailwind.css` не комітимо.
+- `static/js/`: невеликий vanilla JS без залежностей. `templates/components/`: UI-кіт. `/styleguide/`: UI-кіт і wireframes (лише коли `STYLEGUIDE_ENABLED`).
 
 ## Обов'язкові правила
 - **Мова.** Українська — основна: відкривається на `/` без префікса, EN — на `/en/` (ст. 27 ЗУ «Про забезпечення функціонування української мови як державної»). EN не може містити більше інформації, ніж UA. Усі інтерфейсні рядки — через `{% translate %}` / `gettext`, вихідна мова рядків — українська. Назви полів і `help_text` в адмінці — українською.
@@ -37,7 +39,7 @@ uv run python manage.py makemigrations --check --dry-run
 | Агент | Коли викликати |
 |---|---|
 | `wagtail-developer` | Моделі, блоки, міграції, views, тести |
-| `frontend-developer` | Шаблони, Tailwind, компоненти, Alpine.js |
+| `frontend-developer` | Шаблони, Tailwind, компоненти, JS |
 | `content-editor` | Тексти, help_text, переклад `.po`, CONTENT_GUIDE (без вигаданих фактів) |
 | `django-reviewer` | Рев'ю перед комітом: коректність, безпека, міграції, тести (лише звіт) |
 | `a11y-auditor` | Після змін у шаблонах і перед закриттям фази (лише звіт) |

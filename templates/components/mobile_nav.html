@@ -1,0 +1,67 @@
+{% load i18n %}
+{% comment %}
+  Мобільне меню (< 1024px). З JS — модальний діалог на весь екран (static/js/site.js ставить inert на решту
+  сторінки, Esc закриває). Без JS — звичайний блок під шапкою з розгорнутими підрозділами.
+{% endcomment %}
+<div id="mobile-menu"
+     class="bg-white lg:hidden js:fixed js:inset-0 js:z-50 js:overflow-y-auto nojs:border-t nojs:border-gray-300"
+     data-disclosure-panel
+     data-modal
+     data-modal-label="mobile-menu-title">
+  <div class="container-site flex items-center justify-between py-4">
+    <p id="mobile-menu-title"
+       class="font-head text-xl font-medium text-primary-900">{% translate "Меню" %}</p>
+    <button type="button"
+            class="btn-secondary px-3"
+            data-disclosure
+            aria-expanded="false"
+            aria-controls="mobile-menu">
+      {% include "components/icon.html" with name="x" %}
+      {% translate "Закрити" %}
+    </button>
+  </div>
+  <div class="container-site pb-10">
+    {% if search_url %}
+      <div class="mb-6">{% include "components/search_form.html" with form_id="mobile-search" %}</div>
+    {% endif %}
+    {% if nav_items %}
+      <nav aria-label="{% translate 'Головне меню' %}">
+        <ul class="divide-y divide-gray-300 border-y border-gray-300">
+          {% for item in nav_items %}
+            <li>
+              <div class="flex items-stretch justify-between">
+                <a href="{{ item.url }}"
+                   class="flex min-h-12 flex-1 items-center py-2 font-medium no-underline"
+                   {% if item.current %}aria-current="page"{% endif %}>{{ item.title }}</a>
+                {% if item.children %}
+                  <button type="button"
+                          class="group flex min-h-12 min-w-12 cursor-pointer items-center justify-center text-primary-700"
+                          data-disclosure
+                          aria-expanded="{% if item.active %}true{% else %}false{% endif %}"
+                          aria-controls="mobile-sub-{{ forloop.counter }}">
+                    <span class="group-aria-expanded:rotate-180">{% include "components/icon.html" with name="chevron-down" %}</span>
+                    <span class="sr-only">{% blocktranslate with title=item.title %}Підрозділи: {{ title }}{% endblocktranslate %}</span>
+                  </button>
+                {% endif %}
+              </div>
+              {% if item.children %}
+                <ul id="mobile-sub-{{ forloop.counter }}"
+                    class="space-y-1 pb-4 pl-4"
+                    data-disclosure-panel
+                    {% if item.active %}data-open{% endif %}>
+                  {% for child in item.children %}
+                    <li>
+                      <a href="{{ child.url }}"
+                         class="flex min-h-11 items-center"
+                         {% if child.current %}aria-current="page"{% endif %}>{{ child.title }}</a>
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      </nav>
+    {% endif %}
+  </div>
+</div>

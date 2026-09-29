@@ -1,0 +1,16 @@
+{% load i18n %}
+{# Банер термінового оголошення (вмикається в SiteSettings). Параметри: alert — {text, url, link_text} #}
+<div class="bg-accent-400 text-ink"
+     role="region"
+     aria-label="{% translate 'Термінове оголошення' %}">
+  <div class="container-site flex flex-wrap items-center gap-x-4 gap-y-1 py-3">
+    <p class="flex items-center gap-2 font-medium">
+      {% include "components/icon.html" with name="alert-triangle" %}
+      {{ alert.text }}
+    </p>
+    {% if alert.url %}
+      <a href="{{ alert.url }}"
+         class="font-medium text-ink hover:text-ink">{{ alert.link_text|default:_("Детальніше") }}</a>
+    {% endif %}
+  </div>
+</div>

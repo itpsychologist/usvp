@@ -1,0 +1,50 @@
+{% extends "styleguide/base.html" %}
+{% block title %}
+  {{ article.title }} (макет)
+{% endblock title %}
+{% block content %}
+  <div class="container-site">
+    {% include "components/breadcrumbs.html" %}
+    <article class="mx-auto max-w-3xl pb-10">
+      <p class="flex flex-wrap items-center gap-2 text-gray-600">
+        {% include "components/icon.html" with name="calendar" class="size-4" %}
+        <time datetime="{{ article.date|date:'Y-m-d' }}">{{ article.date|date:"j E Y" }}</time>
+        <span class="badge">{{ article.tag }}</span>
+      </p>
+      <h1 class="mt-3">{{ article.title }}</h1>
+      <p class="mt-4 text-lg text-gray-700">{{ article.lead }}</p>
+      <figure class="mt-8">
+        <div class="aspect-[16/9] rounded-lg bg-gray-200"
+             role="img"
+             aria-label="Опис зображення (alt-текст обов'язковий)"></div>
+        <figcaption class="mt-2 text-sm text-gray-600">Підпис до фото. Автор фото.</figcaption>
+      </figure>
+      <div class="prose-site mt-8">
+        <p>
+          Текст-заглушка: основний текст новини. Абзаци короткі, 3–5 речень. Ширина рядка обмежена 68 символами для зручності читання.
+        </p>
+        <p>
+          Текст-заглушка: другий абзац. Посилання в тексті <a href="#">виглядають так</a> і завжди підкреслені.
+        </p>
+        <h2>Підзаголовок у тексті</h2>
+        <p>Текст-заглушка: продовження новини.</p>
+        <blockquote>
+          <p>Цитата або пряма мова, якщо вона є в новині.</p>
+        </blockquote>
+      </div>
+      <section class="mt-10" aria-labelledby="attachments-title">
+        <h2 id="attachments-title" class="text-xl md:text-2xl">Документи</h2>
+        <div class="mt-4">{% include "components/document_list.html" %}</div>
+      </section>
+    </article>
+    <section class="border-t border-gray-300 py-10"
+             aria-labelledby="related-title">
+      <h2 id="related-title">Інші новини</h2>
+      <ul class="mt-6 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {% for item in related %}
+          <li>{% include "components/news_card.html" %}</li>
+        {% endfor %}
+      </ul>
+    </section>
+  </div>
+{% endblock content %}

@@ -1,0 +1,105 @@
+{% load i18n %}
+{% comment %}
+  Футер. Контекст (у фазі 2 — з SiteSettings і меню футера):
+  site_info — {address, phones: [{label, number, href}], email, schedule: [{days, hours}], map_url, facebook_url, council_url}
+  footer_links — [{title, url}] службові сторінки
+  last_updated — дата останнього оновлення сайту
+{% endcomment %}
+{% now "Y" as current_year %}
+<footer class="mt-16 bg-primary-900 text-white">
+  {% if site_info %}
+    <div class="container-site grid gap-10 py-12 md:grid-cols-2 lg:grid-cols-4">
+      <section aria-labelledby="footer-contacts">
+        <h2 id="footer-contacts" class="text-lg text-white contrast:text-white">{% translate "Контакти" %}</h2>
+        <address class="mt-4 space-y-3 not-italic">
+          <p class="flex gap-3">
+            {% include "components/icon.html" with name="map-pin" class="mt-1 size-5" %}
+            {{ site_info.address }}
+          </p>
+          {% for phone in site_info.phones %}
+            <p class="flex gap-3">
+              {% include "components/icon.html" with name="phone" class="mt-1 size-5" %}
+              <span>
+                {% if phone.label %}<span class="block text-sm text-primary-100">{{ phone.label }}</span>{% endif %}
+                <a href="tel:{{ phone.href }}" class="text-white hover:text-primary-100">{{ phone.number }}</a>
+              </span>
+            </p>
+          {% endfor %}
+          {% if site_info.email %}
+            <p class="flex gap-3">
+              {% include "components/icon.html" with name="mail" class="mt-1 size-5" %}
+              <a href="mailto:{{ site_info.email }}"
+                 class="wrap-anywhere text-white hover:text-primary-100">{{ site_info.email }}</a>
+            </p>
+          {% endif %}
+        </address>
+      </section>
+      <section aria-labelledby="footer-schedule">
+        <h2 id="footer-schedule" class="text-lg text-white contrast:text-white">{% translate "Графік роботи" %}</h2>
+        <dl class="mt-4 space-y-2">
+          {% for row in site_info.schedule %}
+            <div>
+              <dt class="text-sm text-primary-100">{{ row.days }}</dt>
+              <dd>
+                {{ row.hours }}
+              </dd>
+            </div>
+          {% endfor %}
+        </dl>
+      </section>
+      <section aria-labelledby="footer-links">
+        <h2 id="footer-links" class="text-lg text-white contrast:text-white">{% translate "Ми в мережі" %}</h2>
+        <ul class="mt-4 space-y-3">
+          {% if site_info.council_url %}
+            <li>
+              {% translate "Лубенська міська рада" as link_title %}
+              {% include "components/external_link.html" with url=site_info.council_url title=link_title on_dark=True %}
+            </li>
+          {% endif %}
+          {% if site_info.facebook_url %}
+            <li>
+              {% translate "Сторінка у Facebook" as link_title %}
+              {% include "components/external_link.html" with url=site_info.facebook_url title=link_title on_dark=True %}
+            </li>
+          {% endif %}
+          {% if site_info.map_url %}
+            <li>
+              {% translate "Ми на Google Maps" as link_title %}
+              {% include "components/external_link.html" with url=site_info.map_url title=link_title on_dark=True %}
+            </li>
+          {% endif %}
+        </ul>
+      </section>
+      {% if footer_links %}
+        <nav aria-labelledby="footer-service">
+          <h2 id="footer-service" class="text-lg text-white contrast:text-white">{% translate "Інформація" %}</h2>
+          <ul class="mt-4 space-y-3">
+            {% for link in footer_links %}
+              <li>
+                <a href="{{ link.url }}"
+                   class="inline-flex min-h-11 items-center text-white hover:text-primary-100">{{ link.title }}</a>
+              </li>
+            {% endfor %}
+          </ul>
+        </nav>
+      {% endif %}
+    </div>
+  {% endif %}
+  <div class="border-t border-white/20">
+    <div class="container-site flex flex-col gap-2 py-6 text-sm text-primary-100 md:flex-row md:justify-between">
+      <p>© {{ current_year }} {% translate "Управління соціальної та ветеранської політики Лубенської міської ради" %}</p>
+      {% if last_updated %}
+        <p>
+          {% translate "Останнє оновлення:" %} <time datetime="{{ last_updated|date:'Y-m-d' }}">{{ last_updated|date:"d.m.Y" }}</time>
+        </p>
+      {% endif %}
+      <p>
+        <a href="#top"
+           class="inline-flex items-center gap-1 text-white hover:text-primary-100">
+          {% include "components/icon.html" with name="arrow-up" class="size-4" %}
+          {% translate "Нагору" %}
+        </a>
+      </p>
+    </div>
+  </div>
+</footer>

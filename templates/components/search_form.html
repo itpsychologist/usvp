@@ -1,0 +1,20 @@
+{% load i18n %}
+{% comment %}
+  Форма пошуку. Параметри: form_id (унікальний на сторінці), search_url, search_query,
+  compact — підпис лише для скрінрідерів (поруч видима кнопка «Знайти»).
+{% endcomment %}
+<form role="search" action="{{ search_url }}" method="get" class="w-full">
+  <label for="{{ form_id }}"
+         class="{% if compact %}sr-only{% else %}field-label{% endif %}">{% translate "Пошук на сайті" %}</label>
+  <div class="flex">
+    <input id="{{ form_id }}"
+           type="search"
+           name="q"
+           value="{{ search_query|default:'' }}"
+           class="field-input rounded-r-none">
+    <button type="submit" class="btn-primary shrink-0 rounded-l-none">
+      {% include "components/icon.html" with name="search" %}
+      {% translate "Знайти" %}
+    </button>
+  </div>
+</form>

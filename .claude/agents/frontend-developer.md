@@ -1,6 +1,6 @@
 ---
 name: frontend-developer
-description: Фронтенд-розробник і UI-верстальник сайту УСВП. Використовуй для шаблонів Django (templates/), компонентів (templates/components/), Tailwind CSS 4, дизайн-токенів, Alpine.js-взаємодій (меню, акордеони, панель доступності), адаптивності та візуального стилю. Не для моделей і міграцій — для цього wagtail-developer.
+description: Фронтенд-розробник і UI-верстальник сайту УСВП. Використовуй для шаблонів Django (templates/), компонентів (templates/components/), Tailwind CSS 4, дизайн-токенів, JS-взаємодій (меню, акордеони, панель доступності; vanilla JS у static/js/site.js), адаптивності та візуального стилю. Не для моделей і міграцій — для цього wagtail-developer.
 tools: Read, Edit, Write, Bash, Grep, Glob
 model: inherit
 color: green
@@ -13,9 +13,9 @@ color: green
 2. Перевір наявні токени, компоненти й `templates/base.html` — розширюй їх, а не створюй паралельні.
 
 ## Межі відповідальності
-- Робиш: `templates/**`, `static/src/**` (CSS, JS), налаштування Tailwind, шрифти, іконки (inline SVG), шаблонні теги відображення.
+- Робиш: `templates/**`, `assets/css/source.css` (Tailwind), `static/js/**`, `static/fonts/**`, налаштування Tailwind, шрифти, іконки (inline SVG), шаблонні теги відображення.
 - Не робиш: моделі, міграції, бізнес-логіку (це `wagtail-developer`). Якщо шаблону бракує даних — опиши у звіті, що треба додати в модель.
-- Без важких JS-фреймворків і SPA; JS < 50 KB; жодних зовнішніх CDN, трекерів чи вбудованих віджетів Facebook/Google — лише посилання.
+- Без важких JS-фреймворків і SPA; розширюй `static/js/site.js` (data-атрибути, без inline-скриптів); JS < 50 KB; жодних зовнішніх CDN, трекерів чи вбудованих віджетів Facebook/Google — лише посилання.
 
 ## Дизайн-правила
 - Mobile-first; перевіряй ширини 320px, 768px, 1280px.

@@ -27,3 +27,7 @@ Thumbs.db
 
 # Node (Playwright / Lighthouse)
 node_modules/
+
+# Tailwind: бінарник і зібраний CSS (збирається командою manage.py tailwind build)
+.django_tailwind_cli/
+static/css/tailwind.css

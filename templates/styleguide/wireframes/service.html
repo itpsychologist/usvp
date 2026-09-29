@@ -1,0 +1,83 @@
+{% extends "styleguide/base.html" %}
+{% block title %}
+  Пільги та гарантії (макет)
+{% endblock title %}
+{% block content %}
+  <div class="container-site">
+    {% include "components/breadcrumbs.html" %}
+    <div class="grid gap-10 pb-10 lg:grid-cols-[18rem_1fr]">
+      <aside class="order-last lg:order-first">
+        {% include "components/section_nav.html" %}
+      </aside>
+      <article>
+        <p class="badge bg-veteran-100 text-veteran-700">Послуга</p>
+        <h1 class="mt-3">Пільги та гарантії</h1>
+        <p class="mt-4 max-w-prose text-lg text-gray-700">
+          Текст-заглушка: одне речення — що людина отримає і в якій ситуації послуга потрібна.
+        </p>
+        {# Коротко про послугу: відповіді на головні питання одразу під заголовком #}
+        <dl class="mt-8 grid gap-px overflow-hidden rounded-lg border border-gray-300 bg-gray-300 sm:grid-cols-3">
+          <div class="bg-white p-4">
+            <dt class="text-sm text-gray-600">Строк</dt>
+            <dd class="mt-1 font-medium">
+              [N] робочих днів
+            </dd>
+          </div>
+          <div class="bg-white p-4">
+            <dt class="text-sm text-gray-600">Вартість</dt>
+            <dd class="mt-1 font-medium">
+              Безоплатно
+            </dd>
+          </div>
+          <div class="bg-white p-4">
+            <dt class="text-sm text-gray-600">Де отримати</dt>
+            <dd class="mt-1 font-medium">
+              <a href="#where">Відділ [назва]</a>
+            </dd>
+          </div>
+        </dl>
+        <div class="mt-8 lg:hidden">{% include "components/page_toc.html" with toc_id="toc-mobile" %}</div>
+        <div class="mt-10 grid gap-10 xl:grid-cols-[1fr_16rem]">
+          <div class="prose-site">
+            <h2 id="who">Хто має право</h2>
+            <ul>
+              <li>Текст-заглушка: категорія осіб 1.</li>
+              <li>Текст-заглушка: категорія осіб 2.</li>
+              <li>Текст-заглушка: категорія осіб 3.</li>
+            </ul>
+            <h2 id="documents">Які документи потрібні</h2>
+            <ol>
+              <li>Заява (зразок нижче).</li>
+              <li>Документ, що посвідчує особу.</li>
+              <li>Текст-заглушка: інші документи відповідно до порядку.</li>
+            </ol>
+            {% include "components/callout.html" with variant="info" title="Порада" text="Текст-заглушка: коротка підказка, як уникнути повторного візиту." %}
+            {% include "components/document_list.html" %}
+            <h2 id="where">Куди звертатися</h2>
+            <p>Текст-заглушка: куди звернутися особисто або як подати документи іншим способом.</p>
+            {% include "components/contact_card.html" %}
+            <h2 id="terms">Строки та вартість</h2>
+            <p>Текст-заглушка: строк розгляду звернення та інформація про вартість.</p>
+            <h2 id="legal">Підстави</h2>
+            <ul>
+              <li>
+                <a href="#">Назва нормативно-правового акта [1]</a>
+              </li>
+              <li>
+                <a href="#">Назва нормативно-правового акта [2]</a>
+              </li>
+            </ul>
+            <h2 id="faq">Часті питання</h2>
+          </div>
+          <div class="hidden xl:block">
+            <div class="sticky top-4">{% include "components/page_toc.html" %}</div>
+          </div>
+        </div>
+        <div class="mt-4 max-w-prose">{% include "components/accordion.html" with items=faq %}</div>
+        <p class="mt-10 text-sm text-gray-600">
+          Сторінку оновлено: <time datetime="{{ updated|date:'Y-m-d' }}">{{ updated|date:"d.m.Y" }}</time>
+        </p>
+      </article>
+    </div>
+  </div>
+{% endblock content %}
